@@ -50,12 +50,4 @@ class User extends Authenticatable
             'is_verified' => 'boolean',
         ];
     }
-    
-    /**
-     * Get the bookings for the user.
-     */
-    public function bookings()
-    {
-        return $this->hasMany(Booking::class);
-    }
 }
