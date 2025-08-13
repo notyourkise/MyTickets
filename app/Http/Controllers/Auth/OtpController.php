@@ -171,21 +171,36 @@ class OtpController extends Controller
         // Send OTP email
         try {
             Mail::to($user->email)->send(new SendOtpMail($otpCode, $user->name));
-            
             return response()->json([
                 'success' => true,
                 'message' => 'Kode OTP telah dikirim ke email Anda.'
             ]);
         } catch (\Exception $e) {
+            \Log::error('sendOtp SMTP failure: '.$e->getMessage(), [
+                'email' => $user->email,
+                'mailer' => config('mail.default')
+            ]);
+            // Allow continuing only when using non-delivery mailers (log/array)
+            if (in_array(config('mail.default'), ['log', 'array'])) {
+                \Log::warning('OTP email send failed in local env: '.$e->getMessage());
+                return response()->json([
+                    'success' => true,
+                    'message' => 'OTP dibuat (mode lokal).',
+                    'debug_otp' => $otpCode
+                ]);
+            }
             // If the user was newly created, delete it
             if (!$existingUser) {
                 $user->delete();
             }
-            
-            return response()->json([
+            $payload = [
                 'success' => false,
                 'message' => 'Gagal mengirim email. Silakan coba lagi.'
-            ], 500);
+            ];
+            if (config('app.debug')) {
+                $payload['error'] = $e->getMessage();
+            }
+            return response()->json($payload, 500);
         }
     }
     
@@ -281,16 +296,31 @@ class OtpController extends Controller
         // Send OTP email
         try {
             Mail::to($user->email)->send(new SendOtpMail($otpCode, $user->name));
-            
             return response()->json([
                 'success' => true,
                 'message' => 'Kode OTP baru telah dikirim ke email Anda.'
             ]);
         } catch (\Exception $e) {
-            return response()->json([
+            \Log::error('resendApi SMTP failure: '.$e->getMessage(), [
+                'email' => $user->email,
+                'mailer' => config('mail.default')
+            ]);
+            if (in_array(config('mail.default'), ['log', 'array'])) {
+                \Log::warning('Resend OTP email failed in local env: '.$e->getMessage());
+                return response()->json([
+                    'success' => true,
+                    'message' => 'OTP baru dibuat (mode lokal).',
+                    'debug_otp' => $otpCode
+                ]);
+            }
+            $payload = [
                 'success' => false,
                 'message' => 'Gagal mengirim email. Silakan coba lagi.'
-            ], 500);
+            ];
+            if (config('app.debug')) {
+                $payload['error'] = $e->getMessage();
+            }
+            return response()->json($payload, 500);
         }
     }
     

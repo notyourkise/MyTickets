@@ -634,6 +634,22 @@
         color: #E86C00;
         border-bottom: 3px solid #E86C00;
     }
+    /* Limit inner content width inside modal for breathing space */
+    #authModal .modal-inner {
+        max-width: 420px; /* content width, smaller than modal */
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* Add comfortable spacing between fields inside modal forms */
+    #authModal form > div + div {
+        margin-top: 14px; /* space between stacked form rows */
+    }
+    /* Ensure labels have some breathing room from inputs */
+    #authModal .modal-inner label {
+        display: block;
+        margin-bottom: 6px;
+    }
 </style>
 </head>
 <body class="antialiased">
@@ -723,28 +739,29 @@
             
             <!-- Initial Step - Email Form -->
             <div id="initialStep" class="modal-step px-8 pt-8 pb-6">
-                <h2 id="authFormTitle" class="text-2xl font-bold text-center mb-5">Log In / Register</h2>
-                
-                <!-- Auth Mode Selection -->
-                <div class="flex border border-gray-300 rounded-lg mb-5 overflow-hidden">
-                    <button 
-                        type="button" 
-                        id="loginModeBtn" 
-                        class="auth-mode-btn active flex-1 py-2 px-4 text-center font-medium"
-                    >
-                        Log In
-                    </button>
-                    <button 
-                        type="button" 
-                        id="registerModeBtn" 
-                        class="auth-mode-btn flex-1 py-2 px-4 text-center font-medium"
-                    >
-                        Register
-                    </button>
-                </div>
-                
-                <!-- Login Form -->
-                <form id="loginForm" class="space-y-5">
+                <div class="modal-inner">
+                    <h2 id="authFormTitle" class="text-2xl font-bold text-center mb-5">Log In / Register</h2>
+                    
+                    <!-- Auth Mode Selection -->
+                    <div class="flex border border-gray-300 rounded-lg mb-5 overflow-hidden">
+                        <button 
+                            type="button" 
+                            id="loginModeBtn" 
+                            class="auth-mode-btn active flex-1 py-2 px-4 text-center font-medium"
+                        >
+                            Log In
+                        </button>
+                        <button 
+                            type="button" 
+                            id="registerModeBtn" 
+                            class="auth-mode-btn flex-1 py-2 px-4 text-center font-medium"
+                        >
+                            Register
+                        </button>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form id="loginForm" class="space-y-5">
                     <div>
                         <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email/Mobile Number</label>
                         <input 
@@ -783,10 +800,10 @@
                             Log In
                         </button>
                     </div>
-                </form>
-                
-                <!-- Register Form -->
-                <form id="registerForm" class="space-y-5 hidden">
+                    </form>
+                    
+                    <!-- Register Form -->
+                    <form id="registerForm" class="space-y-5 hidden">
                     <div>
                         <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email/Mobile Number</label>
                         <input 
@@ -809,38 +826,40 @@
                             Continue
                         </button>
                     </div>
-                </form>
-                
-                <div class="relative my-5">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
+                    </form>
+                    
+                    <div class="relative my-5">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">or sign in with</span>
+                        </div>
                     </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">or sign in with</span>
+                    
+                    <div class="w-full">
+                        <button 
+                            type="button" 
+                            class="flex items-center justify-center w-full py-3 px-4 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                        >
+                            <img src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt="Google" class="h-5 w-5 mr-3">
+                            Google
+                        </button>
                     </div>
-                </div>
-                
-                <div class="w-full">
-                    <button 
-                        type="button" 
-                        class="flex items-center justify-center w-full py-3 px-4 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                    >
-                        <img src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt="Google" class="h-5 w-5 mr-3">
-                        Google
-                    </button>
-                </div>
-                
-                <div class="text-xs text-center text-gray-600 mt-6">
-                    By continuing, you agree to the <a href="#" class="text-blue-600">Terms & Conditions</a> and <a href="#" class="text-blue-600">Privacy Notice</a>.
+                    
+                    <div class="text-xs text-center text-gray-600 mt-6">
+                        By continuing, you agree to the <a href="#" class="text-blue-600">Terms & Conditions</a> and <a href="#" class="text-blue-600">Privacy Notice</a>.
+                    </div>
                 </div>
             </div>
             
             <!-- Verification Step - OTP Input -->
             <div id="verificationStep" class="modal-step p-8">
-                <h2 class="text-2xl font-bold text-center mb-2">Verification</h2>
-                <p class="text-gray-500 text-center mb-6">OTP code has been sent to <span id="verificationEmail" class="font-medium"></span></p>
-                
-                <form id="otpForm" class="space-y-6">
+                <div class="modal-inner">
+                    <h2 class="text-2xl font-bold text-center mb-2">Verification</h2>
+                    <p class="text-gray-500 text-center mb-6">OTP code has been sent to <span id="verificationEmail" class="font-medium"></span></p>
+                    
+                    <form id="otpForm" class="space-y-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-3">Enter OTP Code</label>
                         <div class="flex justify-between gap-2">
@@ -869,15 +888,17 @@
                             Resend OTP Code
                         </button>
                     </div>
-                </form>
+                    </form>
+                </div>
             </div>
             
             <!-- Create Password Step (After Register Verification) -->
             <div id="createPasswordStep" class="modal-step p-8">
-                <h2 class="text-2xl font-bold text-center mb-2">Create Password</h2>
-                <p class="text-gray-500 text-center mb-6">Create a secure password for your account</p>
-                
-                <form id="passwordForm" class="space-y-6">
+                <div class="modal-inner">
+                    <h2 class="text-2xl font-bold text-center mb-2">Create Password</h2>
+                    <p class="text-gray-500 text-center mb-6">Create a secure password for your account</p>
+                    
+                    <form id="passwordForm" class="space-y-6">
                     <div>
                         <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                         <div class="relative">
@@ -931,7 +952,8 @@
                             Complete Registration
                         </button>
                     </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -2404,6 +2426,9 @@
                     }
                     
                     if (data.success) {
+                        if (data.debug_otp) {
+                            console.log('DEBUG OTP (local env):', data.debug_otp);
+                        }
                         // Update verification email display
                         const verificationEmailSpan = document.getElementById('verificationEmail');
                         if (verificationEmailSpan) {
@@ -2422,7 +2447,9 @@
                             }
                         }, 300);
                     } else {
-                        alert(data.message || 'Failed to send OTP. Please try again.');
+                        // Surface detailed error from server (available when APP_DEBUG=true)
+                        const detail = data && data.error ? `\n\nDetail: ${data.error}` : '';
+                        alert((data.message || 'Failed to send OTP. Please try again.') + detail);
                     }
                 })
                 .catch(error => {
@@ -2635,7 +2662,8 @@
                         // Focus the first input
                         document.querySelector('.otp-input').focus();
                     } else {
-                        alert(data.message || 'Failed to resend OTP. Please try again.');
+                        const detail = data && data.error ? `\n\nDetail: ${data.error}` : '';
+                        alert((data.message || 'Failed to resend OTP. Please try again.') + detail);
                     }
                 })
                 .catch(error => {
