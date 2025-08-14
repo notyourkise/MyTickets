@@ -289,7 +289,7 @@
         margin: 0;
     }
     /* --- CSS UNTUK DROPDOWN PENUMPANG & KELAS (trigger dan opsi) --- */
-    .dropdown-trigger { display: flex; align-items: center; gap: 0.5rem; width: 180px; padding: 0.7rem 0.75rem; border: 1px solid #d1d5db; color: #374151; background: #fff; border-radius: 8px; font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: all .2s ease; text-align: left; margin: 0 .375rem; }
+    .dropdown-trigger { display: flex; align-items: center; gap: 0.5rem; width: 180px; padding: 0.7rem 0.75rem; border: 1px solid #d1d5db; color: #fff; background: transparent; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all .2s ease; text-align: left; margin: 0 .375rem; }
     .dropdown-trigger:hover { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,108,228,.15); }
     .dropdown-trigger i:first-child { font-size: 0.95rem; color: var(--primary); width: 18px; text-align: center; }
     .dropdown-trigger.passengers-trigger { width: 300px; }
@@ -305,11 +305,11 @@
     .type-title { font-weight: 500; }
     .type-sub { font-size: 0.75rem; color: #9ca3af; margin-top: 1px; }
     .counter { display: flex; align-items: center; gap: 0.75rem; }
-    .counter-btn { width: 32px; height: 32px; border-radius: 9999px; background: #f3f4f6; border: 1px solid #e5e7eb; color: #374151; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .2s; }
+    .counter-btn { width: 32px; height: 32px; border-radius: 9999px; background: transparent; border: 1px solid #e5e7eb; color: #374151; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .2s; }
     .counter-btn:hover { background: #e5e7eb; }
     .counter-btn:disabled { opacity: .5; cursor: not-allowed; background: #f9fafb; }
     .counter .count { min-width: 20px; text-align: center; font-weight: 500; font-size: 1rem; color: #1f2937; }
-    .class-option { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.75rem; border-radius: 8px; background: #fff; cursor: pointer; text-align: left; border: none; font-size: 0.9rem; transition: background-color .2s; }
+    .class-option { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.75rem; border-radius: 8px; background: #ffffffff; cursor: pointer; text-align: left; border: none; font-size: 0.9rem; transition: background-color .2s; }
     .class-option:hover { background: #f9fafb; }
     .top-bar {
         display: flex;
@@ -408,11 +408,11 @@
         color: #fff !important;
     }
     .ticket-icon {
-        width: 38px;
+        width: 150px;
         height: 38px;
         border-radius: 14px;
-        background: rgba(255, 255, 255, .12);
-        border: 1px solid rgba(255, 255, 255, .35);
+        background: transparent;
+        border: none;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -893,8 +893,8 @@
     .combined-labels, .combined-labels span, .combined-labels label { color: #fff !important; }
     /* --- HERO 4-UP LOGO ROTATOR (switches every 2s) --- */
     .hero-logos-frame { display: inline-flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 16px; border: 1.5px solid #e5e7eb; background: #fff; box-shadow: 0 2px 16px -8px rgba(0,0,0,.08); }
-    .trusted-label { color: #fff; font-weight: 600; font-size: .9rem; letter-spacing: .3px; white-space: nowrap; }
-    .trusted-divider { color: rgba(255,255,255,0.6); }
+    .trusted-label { color: #000000ff; font-weight: 600; font-size: .9rem; letter-spacing: .3px; white-space: nowrap; }
+    .trusted-divider { color: rgba(0, 0, 0, 0.6); }
     .hero-logos { display: flex; align-items: center; justify-content: center; gap: 1.25rem; flex-wrap: nowrap; }
     .hero-logos img { max-height: 40px; width: auto; object-fit: contain; filter: none; opacity: 1; transition: transform .2s ease, opacity .2s ease; }
     .hero-logos img:hover { transform: scale(1.04); }
@@ -955,11 +955,11 @@
         
         <!-- Header Level 2 -->
         <div class="inner">
-            <a href="/" class="site-logo" aria-label="Home">
+            <a href="public/images/logotick.png" class="site-logo" aria-label="Home">
                 <span class="ticket-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h10.8c.28 0 .54.12.72.33l3.5 4.17c.26.31.26.76 0 1.07l-3.5 4.17a.96.96 0 0 1-.72.33H4.5A2.5 2.5 0 0 1 2 12.5c0-.28.22-.5.5-.5a2 2 0 0 0 0-4c-.28 0-.5-.22-.5-.5A2.5 2.5 0 0 1 4.5 5Zm5 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm3 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm-6 4.75c0 .41.34.75.75.75h4.5a.75.75 0 0 0 0-1.5h-4.5a.75.75 0 0 0-.75.75Z"/></svg>
+                    <img src="/images/logotick.png" alt="Ticket Icon" />
                 </span>
-                <span>MyTickets</span>
+                
             </a>
             <div class="product-tabs" aria-label="Product Tabs">
                 <button class="product-tab active" id="flightsTab"><i class="fas fa-plane"></i><span>Flights</span></button>
@@ -1218,14 +1218,7 @@
                         <div class="flex items-center gap-2 text-sm font-medium text-white/90">
                             <div class="trip-type-switch">
                                 <button :class="{'active':mode==='standard'}" @click="mode='standard'">One-way / Round-trip</button>
-                                <button :class="{'active':mode==='multicity'}" @click="mode='multicity'">Multi-city</button>
                             </div>
-                            <template x-if="mode==='standard'">
-                                <div class="trip-type-switch ml-2">
-                                    <button :class="{'active':tripType==='oneway'}" @click="tripType='oneway'; returnDate=''">One-way</button>
-                                    <button :class="{'active':tripType==='roundtrip'}" @click="tripType='roundtrip'; $nextTick(()=>initPickers())">Round-trip</button>
-                                </div>
-                            </template>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="relative" x-data="{ showPassengers: false }">
@@ -1382,13 +1375,6 @@
                         <span class="ql-label">Looking for</span>
                         <a href="#ideas"><i class="fas fa-globe"></i> <span>Discover Flight Ideas</span></a>
                         <a href="#price-alert"><i class="far fa-bell"></i> <span>Price Alert</span></a>
-                    </div>
-                    <!-- Social Proof -->
-                    <div class="social-proof">
-                        <span class="text-xs uppercase tracking-wide text-white/80 font-semibold">Trusted by</span>
-                        <img src="{{ asset('image/garuda_indonesia.png') }}" alt="Garuda" loading="lazy">
-                        <img src="{{ asset('image/airasia.png') }}" alt="AirAsia" loading="lazy">
-                        <img src="{{ asset('image/citilink.png') }}" alt="Citilink" loading="lazy">
                     </div>
                 </div>
                 <!-- 4-logo rotator inside hero -->
