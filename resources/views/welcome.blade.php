@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Alpine.js for x-data/x-show bindings -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -32,6 +34,9 @@
         }
     .text-primary { color: var(--primary); }
     .bg-primary { background: var(--primary); }
+
+    /* Hide elements until Alpine initializes to avoid flicker */
+    [x-cloak] { display: none !important; }
 
         /* Modal Animation */
         .modal-content {
@@ -63,7 +68,7 @@
             background-color: #f3f4f6;
         }
         .bg-hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/bromo.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/milky.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -75,12 +80,12 @@
 
         /* Traveloka Inspired Booking Card */
         .search-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
+            background: transparent; /* fully transparent */
+            backdrop-filter: none; /* no blur */
             border-radius: 18px;
-            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, .15);
+            box-shadow: none; /* remove shadow */
             padding: 1.75rem 2rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: none; /* remove border */
         }
         .trip-type-switch {
             display: flex;
@@ -171,6 +176,25 @@
             box-shadow: 0 18px 40px -12px rgba(0, 0, 0, .15);
             width: 280px;
         }
+    .dropdown-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:.5rem; }
+    .dropdown-title { font-size:1.1rem; font-weight:700; color:#334155; }
+    .dropdown-close { background:transparent; border:none; color:#64748b; font-size:1rem; padding:.25rem; border-radius:6px; cursor:pointer; }
+    .dropdown-close:hover { background:#f1f5f9; color:#0f172a; }
+    .passenger-row { display:flex; align-items:center; justify-content:space-between; padding:.5rem 0; border-bottom:1px solid #e5e7eb; }
+    .passenger-row:last-child { border-bottom:none; }
+    .passenger-row .left { display:flex; align-items:center; gap:.6rem; color:#334155; }
+    .passenger-row .left i { color:#0ea5e9; width:18px; text-align:center; }
+    .type-title { font-weight:600; line-height:1.1; }
+    .type-sub { font-size:.75rem; color:#94a3b8; margin-top:2px; }
+    .counter { display:flex; align-items:center; gap:.6rem; }
+    .counter-btn { width:28px; height:28px; border-radius:9999px; background:#f1f5f9; border:1px solid #e2e8f0; color:#334155; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .counter-btn:hover { background:#e2e8f0; }
+    .counter-btn:disabled { opacity:.5; cursor:not-allowed; }
+    .counter .count { min-width:20px; text-align:center; font-weight:600; color:#0f172a; }
+    .option-row { width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:.6rem .5rem; border-radius:10px; border:1px solid transparent; background:#fff; cursor:pointer; }
+    .option-row .left { display:flex; align-items:center; gap:.6rem; color:#334155; }
+    .option-row .left i { color:#0ea5e9; }
+    .option-row:hover { background:#f8fafc; border-color:#e2e8f0; }
         .primary-action-button {
             background: var(--brand-orange);
             display: flex;
@@ -195,23 +219,40 @@
         }
         .quick-links {
             display: flex;
-            gap: 1.25rem;
+            align-items: center;
+            justify-content: flex-start; /* align left under airport button */
+            gap: .5rem; /* tighter spacing */
             flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-        .quick-links a {
-            font-size: .8rem;
-            background: rgba(255, 255, 255, .15);
-            padding: .45rem .85rem;
-            border-radius: 8px;
+            margin-top: .75rem;
+            margin-left: 2rem;
             color: #fff;
-            font-weight: 500;
-            backdrop-filter: blur(4px);
-            transition: .25s;
+            max-width: 520px; /* match route combined button width */
+        }
+        .quick-links .ql-label { color: #fff; font-weight: 700; font-size: .95rem; margin-right: .25rem; }
+        .quick-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .4rem .7rem; /* smaller chip */
+            border-radius: 8px; /* smaller radius */
+            font-weight: 600;
+            font-size: .9rem; /* smaller font */
+            color: #fff;
+            text-decoration: none;
+            background: rgba(255,255,255,.18);
+            border: 1px solid rgba(255,255,255,.35);
+            backdrop-filter: blur(2px);
+            transition: background-color .2s, border-color .2s, transform .2s;
+        }
+        .quick-links a i { color: #fff; font-size: .9rem; }
+        @media (max-width: 1024px) {
+            .quick-links { max-width: none; }
         }
         .quick-links a:hover {
-            background: #ffffff;
-            color: #0d74d6;
+            background: rgba(255,255,255,.28);
+            border-color: rgba(255,255,255,.5);
+            color: #fff;
+            transform: translateY(-1px);
         }
         .social-proof {
             display: flex;
@@ -247,6 +288,29 @@
         padding: 0;
         margin: 0;
     }
+    /* --- CSS UNTUK DROPDOWN PENUMPANG & KELAS (trigger dan opsi) --- */
+    .dropdown-trigger { display: flex; align-items: center; gap: 0.5rem; width: 180px; padding: 0.7rem 0.75rem; border: 1px solid #d1d5db; color: #374151; background: #fff; border-radius: 8px; font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: all .2s ease; text-align: left; margin: 0 .375rem; }
+    .dropdown-trigger:hover { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,108,228,.15); }
+    .dropdown-trigger i:first-child { font-size: 0.95rem; color: var(--primary); width: 18px; text-align: center; }
+    .dropdown-trigger.passengers-trigger { width: 300px; }
+    .dropdown-trigger.class-trigger { width: 190px; }
+    .dropdown-panel { position: absolute; right: 0; top: 100%; margin-top: 0.5rem; z-index: 50; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); width: 320px; }
+    .dropdown-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f3f4f6; }
+    .dropdown-title { font-size: 1rem; font-weight: 600; color: #1f2937; }
+    .dropdown-close { background: transparent; border: none; color: #9ca3af; cursor: pointer; }
+    .dropdown-close:hover { color: #1f2937; }
+    .passenger-row { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; }
+    .passenger-row .left { display: flex; align-items: center; gap: 0.75rem; color: #374151; }
+    .passenger-row .left i { font-size: 1.1rem; color: #6b7280; width: 20px; text-align: center; }
+    .type-title { font-weight: 500; }
+    .type-sub { font-size: 0.75rem; color: #9ca3af; margin-top: 1px; }
+    .counter { display: flex; align-items: center; gap: 0.75rem; }
+    .counter-btn { width: 32px; height: 32px; border-radius: 9999px; background: #f3f4f6; border: 1px solid #e5e7eb; color: #374151; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .2s; }
+    .counter-btn:hover { background: #e5e7eb; }
+    .counter-btn:disabled { opacity: .5; cursor: not-allowed; background: #f9fafb; }
+    .counter .count { min-width: 20px; text-align: center; font-weight: 500; font-size: 1rem; color: #1f2937; }
+    .class-option { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.75rem; border-radius: 8px; background: #fff; cursor: pointer; text-align: left; border: none; font-size: 0.9rem; transition: background-color .2s; }
+    .class-option:hover { background: #f9fafb; }
     .top-bar {
         display: flex;
         justify-content: flex-end;
@@ -292,6 +356,30 @@
     .top-bar .register-btn:hover {
         filter: brightness(1.08);
     }
+    /* Specific top-bar auth button styles */
+    #loginBtn {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        padding: .4rem .85rem;
+        border: 1.5px solid rgba(255,255,255,.9);
+        border-radius: 8px;
+        background: transparent;
+        color: #fff;
+        font-weight: 700;
+    }
+    #loginBtn i { font-size: .95rem; line-height: 1; -webkit-text-stroke: 1.25px #fff; color: transparent; }
+    #loginBtn:hover { background: rgba(255,255,255,.08); border-color: #fff; color: #fff !important; }
+
+    #registerBtn {
+        background: var(--primary) !important;
+        color: #fff !important;
+        border-radius: 8px;
+        padding: .4rem .95rem;
+        box-shadow: 0 6px 18px -6px rgba(0,108,228,.6);
+        font-weight: 700;
+    }
+    #registerBtn:hover { filter: brightness(1.08); color: #fff !important; }
     .top-bar a:hover, 
     .top-bar button:not(.register-btn):hover, 
     .product-tab:hover, 
@@ -389,18 +477,74 @@
     
     /* Search table styling and spacing */
     .search-card {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(12px);
+        background: transparent; /* fully transparent */
+        backdrop-filter: none; /* no blur */
         border-radius: 18px;
-        box-shadow: 0 12px 30px -8px rgba(0, 0, 0, .15);
-        padding: 1.75rem 2rem 2rem;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        margin-top: 1.5rem;
+        box-shadow: none; /* remove shadow */
+        padding: 1.5rem 2rem 2rem;
+        border: none; /* remove border */
+        margin-top: 0.35rem; /* tighter gap to the stroke above */
     }
+
+    /* Top-right chips for passengers & class */
+    .control-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .4rem .6rem;
+        border: 1px solid rgba(255,255,255,.7);
+        color: #fff;
+        background: rgba(255,255,255,.08);
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: .85rem;
+        line-height: 1;
+        cursor: pointer;
+        backdrop-filter: saturate(120%);
+    }
+    .control-chip i { font-size: .9rem; }
+    .control-chip:hover { background: rgba(255,255,255,.12); }
+
+    /* Swap and search buttons */
+    .swap-btn {
+        width: 42px; height: 42px;
+        border-radius: 9999px;
+        display: inline-flex; align-items: center; justify-content: center;
+        color: #0d74d6;
+        background: #fff;
+        border: 1px solid rgba(0,0,0,.06);
+        box-shadow: 0 6px 16px -6px rgba(0,0,0,.35);
+    }
+    .swap-btn:hover { filter: brightness(0.98); }
+    .search-fab {
+        width: 52px; height: 52px;
+        border-radius: 9999px;
+        display: inline-flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg, #ff7a1a, #ff5a00);
+        color: #fff; font-size: 1.25rem; box-shadow: 0 12px 24px -10px rgba(255,90,0,.6);
+        border: none;
+    }
+    .search-fab:hover { transform: translateY(-1px); filter: brightness(1.02); }
+
+    /* Combined horizontal input groups (route and dates) */
+        .combined-labels {
+            display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 700; font-size: .8rem;
+            margin-bottom: .2rem; text-shadow: 0 1px 2px rgba(0,0,0,.25);
+        }
+        .combined-input {
+            position: relative; background: #ffffff; border: 1px solid rgba(0,0,0,.12); border-radius: 16px;
+            padding: 3px 5px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; box-shadow: 0 10px 20px -12px rgba(0,0,0,.22);
+        }
+    .combined-input .center-divider { position: absolute; left: 50%; top: 14%; bottom: 14%; width: 2px; background: rgba(0,0,0,.08); border-radius: 2px; }
+    .combined-input .swap-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5; }
+    .combined-field { position: relative; min-height: 40px; display: flex; align-items: center; }
+    .combined-field .icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: .9rem; }
+    .combo-input { width: 100%; border: none; outline: none; background: transparent; padding: 8px 8px 8px 34px; font-size: .85rem; color: #111827; }
+    .combo-input[disabled] { color: #9CA3AF; }
     
     /* Hero section and search table positioning */
     .hero-content {
-        padding-top: 180px;
+        padding-top: 70px; /* bring search area closer to header stroke */
         width: 100%;
         max-width: 100%;
         position: relative;
@@ -423,11 +567,11 @@
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .hero-content {
-            padding-top: 140px;
+            padding-top: 110px; /* closer on mobile too */
         }
         
         .search-card {
-            padding: 1.25rem;
+            padding: 1rem 1.25rem 1.25rem;
         }
     }
     
@@ -437,9 +581,9 @@
         margin-top: 0.25rem;
         border-radius: 0.5rem;
         border: 1px solid #D1D5DB;
-        padding: 0.625rem 1rem;
-        font-size: 1rem;
-        line-height: 1.5;
+        padding: 0.5rem 0.875rem; /* smaller padding */
+        font-size: 0.95rem; /* slightly smaller font */
+        line-height: 1.4;
         transition: all 0.2s ease;
     }
     .modal-input:focus {
@@ -454,8 +598,8 @@
         color: white;
         font-weight: 600;
         border-radius: 0.5rem;
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
+        padding: 0.625rem 0.875rem; /* tighter padding */
+        font-size: 0.95rem; /* slightly smaller font */
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         transition: all 0.2s ease;
     }
@@ -503,10 +647,10 @@
     .separator::after { margin-left: 1rem; }
     
     .otp-input { 
-        width: 3rem;
-        height: 3.5rem;
+        width: 2.5rem; /* smaller width */
+        height: 3rem;  /* smaller height */
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 1.25rem; /* smaller font */
         font-weight: 700;
         color: #1F2937;
         border: 2px solid #D1D5DB;
@@ -532,6 +676,7 @@
         justify-content: center;
         padding: 1rem;
         animation: fadeIn 0.3s ease-out;
+        overflow-y: auto; /* allow overlay to scroll on small screens */
     }
     
     .modal.active {
@@ -555,10 +700,10 @@
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         width: 500px;
         max-width: 100%;
-    overflow: hidden;
-    max-height: calc(100vh - 140px); /* give breathing room top & bottom */
-    display: flex;
-    flex-direction: column;
+        /* remove overflow hidden so content can scroll */
+        max-height: calc(100vh - 140px); /* give breathing room top & bottom */
+        display: flex;
+        flex-direction: column;
     }
     
     .modal-step {
@@ -585,8 +730,11 @@
     #authModal .modal-content {
         border-radius: 8px;
         max-width: 500px;
-    max-height: calc(100vh - 140px);
-    overflow-y: auto;
+        max-height: calc(100vh - 140px);
+        overflow-y: auto; /* enable internal scroll */
+        -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+        touch-action: pan-y; /* allow vertical pan inside modal */
+        font-size: 0.95rem; /* slightly smaller base font for modal */
     }
     
     #authModal #closeModal {
@@ -598,7 +746,7 @@
         background-color: #E86C00;
         border: none;
         border-radius: 8px;
-        height: 48px;
+        height: 44px; /* slightly shorter button */
         font-weight: 600;
         box-shadow: none;
         transition: background-color 0.2s;
@@ -643,13 +791,114 @@
 
     /* Add comfortable spacing between fields inside modal forms */
     #authModal form > div + div {
-        margin-top: 14px; /* space between stacked form rows */
+    margin-top: 18px; /* increased space between stacked form rows */
     }
     /* Ensure labels have some breathing room from inputs */
     #authModal .modal-inner label {
         display: block;
-        margin-bottom: 6px;
+    margin-bottom: 8px; /* slightly more space under labels */
     }
+    
+    /* --- CSS BARU UNTUK MENYESUAIKAN TAMPILAN --- */
+    .control-chip {
+        display: inline-flex; align-items: center; gap: .5rem; padding: .6rem .8rem;
+        border: 1px solid #e5e7eb; color: #374151; background: #fff; border-radius: 8px;
+        font-weight: 500; font-size: .875rem; cursor: pointer; transition: all .2s;
+    }
+    .control-chip:hover { background: #f3f4f6; }
+    .control-chip i { font-size: .9rem; color: var(--primary); }
+    
+    .swap-btn {
+        width: 36px; height: 36px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center;
+        color: var(--primary); background: #e0f2fe; border: 1px solid #bae6fd; box-shadow: 0 4px 10px -4px rgba(0,0,0,.2);
+        transition: all .2s;
+    }
+    .swap-btn:hover { background: #cceefd; }
+    
+    .search-fab {
+        width: 56px; height: 56px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center;
+        background: var(--brand-orange); color: #fff; font-size: 1.5rem; box-shadow: 0 10px 20px -8px rgba(255,102,0,.5);
+        border: 2px solid #fff; cursor: pointer; transition: all .2s; position: relative; left: -1px;
+    }
+    .search-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -8px rgba(255,102,0,.6); }
+    
+    .combined-labels {
+        display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: .5rem; color: #1f2937; font-weight: 600; font-size: .8rem;
+        margin-bottom: .375rem; padding: 0 .25rem .125rem;
+    }
+    .labels-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0 .5rem; }
+    .labels-grid span, .labels-grid label { line-height: 1; }
+    .combined-input {
+        position: relative; background: #ffffff; border: 1px solid transparent; border-radius: 9999px;
+        padding: 4px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; box-shadow: 0 4px 12px -4px rgba(0,0,0,.1);
+        transition: all .2s;
+    }
+    .combined-input:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,108,228,.2); }
+    
+    .combined-input .center-divider { position: absolute; left: 50%; top: 12%; bottom: 12%; width: 2px; background: rgba(0,0,0,.08); border-radius: 2px; }
+    .combined-input .swap-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5; }
+    
+    .combined-field { position: relative; display: flex; align-items: center; }
+    .combined-field .icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1rem; }
+    .combo-input { width: 100%; border: none; outline: none; background: transparent; padding: 12px 12px 12px 48px; font-size: .9rem; font-weight: 500; color: #111827; }
+    
+    .quick-links-btn {
+        display: inline-flex; align-items: center; gap: .5rem; background: rgba(255,255,255,0.85); color: #374151;
+        border: 1px solid transparent; padding: .5rem 1rem; border-radius: 9999px; font-size: .875rem; font-weight: 500; cursor: pointer; transition: all .2s;
+    }
+    .quick-links-btn:hover { background: #fff; border-color: #d1d5db; }
+
+    /* Overrides untuk layout satu baris yang lebih rapat */
+    .search-card { padding: 1.25rem 1.25rem 1.25rem; }
+    .combined-input { padding: 4px; border:3px solid rgba(76, 75, 75, 0.9); box-shadow: 0 0 0 2px rgba(0,0,0,.06); }
+    /* Center divider default centered; the route box will override below */
+    .combined-input .center-divider { left: 50%; width: 2px; top: 12%; bottom: 12%; background: rgba(0,0,0,.12); border-radius: 2px; }
+    /* Swap stays offset; only present in the route box */
+    .combined-input .swap-center { transform: translate(calc(-50% - 30px), -50%); }
+    /* Taller button height */
+    .combined-field { min-height: 48px; }
+    .combined-field .icon { left: 8px; font-size: .85rem; }
+    .combo-input { padding: 10px 8px 10px 30px; font-size: .8rem; }
+    .swap-btn { width: 32px; height: 32px; }
+    .search-fab { width: 44px; height: 44px; font-size: 1.1rem; }
+    .combined-input, .combined-field, .combo-input { min-width: 0; }
+
+    /* Date box: nudge to the right a bit */
+    .search-row > div:nth-child(2) .combined-input { margin-left: 40px; }
+
+    /* Align 'Departure date' label with the shifted date box */
+    .combined-labels > .labels-grid:nth-of-type(2) { margin-left: 40px; }
+
+    /* Date placeholders black */
+    input[x-ref="departpicker"]::placeholder,
+    input[x-ref="returnpicker"]::placeholder { color: #111827; opacity: 1; }
+
+    /* Grid khusus satu baris: rute | tanggal | tombol */
+    .search-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) auto; align-items: center; gap: .375rem; }
+    /* Make the two combined buttons narrower on wide screens */
+    .search-row > div > .combined-input { max-width: 520px; }
+    @media (max-width: 1024px) {
+        .search-row { grid-template-columns: 1fr; }
+        .search-row > div > .combined-input { max-width: none; width: 100%; }
+    .search-row > div:nth-child(2) .combined-input { margin-left: 0; }
+    .combined-labels > .labels-grid:nth-of-type(2) { margin-left: 0; }
+    }
+
+    /* Only the first column (airport route) divider aligns with the offset swap */
+    .search-row > div:first-child .combined-input .center-divider { left: calc(50% - 30px); }
+
+    /* Label lebih ringkas + warna putih */
+    .combined-labels { font-size: .75rem; margin-bottom: .25rem; }
+    .labels-grid { padding: 0 .25rem; }
+    .combined-labels, .combined-labels span, .combined-labels label { color: #fff !important; }
+    /* --- HERO 4-UP LOGO ROTATOR (switches every 2s) --- */
+    .hero-logos-frame { display: inline-flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 16px; border: 1.5px solid #e5e7eb; background: #fff; box-shadow: 0 2px 16px -8px rgba(0,0,0,.08); }
+    .trusted-label { color: #fff; font-weight: 600; font-size: .9rem; letter-spacing: .3px; white-space: nowrap; }
+    .trusted-divider { color: rgba(255,255,255,0.6); }
+    .hero-logos { display: flex; align-items: center; justify-content: center; gap: 1.25rem; flex-wrap: nowrap; }
+    .hero-logos img { max-height: 40px; width: auto; object-fit: contain; filter: none; opacity: 1; transition: transform .2s ease, opacity .2s ease; }
+    .hero-logos img:hover { transform: scale(1.04); }
+    @media (max-width: 640px) { .hero-logos { gap: .75rem; } .hero-logos img { max-height: 28px; } .hero-logos-frame { padding: 8px 12px; } }
 </style>
 </head>
 <body class="antialiased">
@@ -697,7 +946,7 @@
         <div class="top-bar">
             <a href="#support">Support</a>
             <a href="#partnership">Partnership</a>
-            <button id="loginBtn" type="button" onclick="showAuthModal('login')">Log In</button>
+            <button id="loginBtn" type="button" onclick="showAuthModal('login')"><i class="fas fa-user"></i> <span>Log In</span></button>
             <button class="register-btn" id="registerBtn" type="button" onclick="showAuthModal('register')">Register</button>
         </div>
         
@@ -964,9 +1213,9 @@
         <div class="hero-content">
             <div class="search-container" x-data="flightSearch()" x-init="initPickers()">
                 <div class="search-card">
-                    <!-- Trip Type High Level -->
-                    <div class="flex flex-wrap items-center justify-between gap-4">
-                        <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
+                    <!-- Top row: trip type (left) and control chips (right) -->
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-2 text-sm font-medium text-white/90">
                             <div class="trip-type-switch">
                                 <button :class="{'active':mode==='standard'}" @click="mode='standard'">One-way / Round-trip</button>
                                 <button :class="{'active':mode==='multicity'}" @click="mode='multicity'">Multi-city</button>
@@ -978,76 +1227,129 @@
                                 </div>
                             </template>
                         </div>
-                    </div>
+                        <div class="flex items-center gap-2">
+                            <div class="relative" x-data="{ showPassengers: false }">
+                                <button @click="showPassengers = !showPassengers" class="dropdown-trigger passengers-trigger">
+                                    <i class="fas fa-user-group"></i>
+                                    <span x-text="passengerSummary()"></span>
+                                    <i class="fas fa-chevron-down text-xs ml-auto"></i>
+                                </button>
+                                <div x-show="showPassengers" x-cloak @click.outside="showPassengers = false" class="dropdown-panel" x-transition>
+                                    <div class="dropdown-header">
+                                        <div class="dropdown-title">Passengers</div>
+                                        <button type="button" class="dropdown-close" @click="showPassengers=false"><i class="fas fa-times"></i></button>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="passenger-row">
+                                            <div class="left"><i class="fas fa-user"></i><div><div class="type-title">Adult</div><div class="type-sub">Age 12 and over</div></div></div>
+                                            <div class="counter">
+                                                <button type="button" class="counter-btn" @click="adjust('adult','-')" :disabled="passengers.adult <= 1"><i class="fas fa-minus"></i></button>
+                                                <span class="count" x-text="passengers.adult"></span>
+                                                <button type="button" class="counter-btn" @click="adjust('adult','+')"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="passenger-row">
+                                            <div class="left"><i class="fas fa-child"></i><div><div class="type-title">Child</div><div class="type-sub">Age 2 - 11</div></div></div>
+                                            <div class="counter">
+                                                <button type="button" class="counter-btn" @click="adjust('child','-')" :disabled="passengers.child <= 0"><i class="fas fa-minus"></i></button>
+                                                <span class="count" x-text="passengers.child"></span>
+                                                <button type="button" class="counter-btn" @click="adjust('child','+')"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="passenger-row">
+                                            <div class="left"><i class="fas fa-baby"></i><div><div class="type-title">Infant (on lap)</div><div class="type-sub">Below age 2</div></div></div>
+                                            <div class="counter">
+                                                <button type="button" class="counter-btn" @click="adjust('infant','-')" :disabled="passengers.infant <= 0"><i class="fas fa-minus"></i></button>
+                                                <span class="count" x-text="passengers.infant"></span>
+                                                <button type="button" class="counter-btn" @click="adjust('infant','+')"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4"><button type="button" class="primary-action-button w-full" @click="showPassengers=false">Done</button></div>
+                                </div>
+                            </div>
 
-                    <!-- Standard Form -->
-                    <div x-show="mode==='standard'" class="mt-6 space-y-4">
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
-        
-        <div class="input-box lg:col-span-3">
-            <i class="icon fas fa-plane-departure"></i>
-            <input type="text" x-model="origin" @input="filter('origin',$event.target.value)" @focus="focusField='origin'; showSuggest=true" @click.away="hideSuggest('origin')" placeholder=" " class="peer">
-            <label>From</label>
-            
-        </div>
-        
-        <div class="input-box lg:col-span-3">
-            <i class="icon fas fa-plane-arrival"></i>
-            <input type="text" x-model="destination" @input="filter('destination',$event.target.value)" @focus="focusField='destination'; showSuggest=true" @click.away="hideSuggest('destination')" placeholder=" " class="peer">
-            <label>To</label>
-            
-        </div>
-        
-        <div class="input-box lg:col-span-3">
-            <i class="icon fas fa-calendar-day"></i>
-            <input type="text" x-ref="departpicker" x-model="departureDate" readonly placeholder=" " class="peer">
-            <label>Departure Date</label>
-        </div>
-        
-        <div class="input-box lg:col-span-3" :class="tripType === 'oneway' ? 'opacity-50' : ''">
-            <i class="icon fas fa-calendar-day"></i>
-            <input type="text" x-ref="returnpicker" x-model="returnDate" readonly placeholder=" " class="peer" :disabled="tripType === 'oneway'">
-            <label>Return Date</label>
-        </div>
-    </div>
-
-    
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        
-        <div class="input-box lg:col-span-9 relative">
-            <i class="icon fas fa-users"></i>
-            <button type="button" @click="showPassengers=!showPassengers" class="input-lookalike peer" :class="{'active': showPassengers}">
-                <span x-text="passengerSummary()"></span> - <span x-text="travelClass"></span>
-            </button>
-            <label>Passengers & Class</label>
-            
-            <div x-show="showPassengers" @click.away="showPassengers=false" class="dropdown-panel">
-                <template x-for="type in ['adult','child','infant']" :key="type">
-                    <div class="flex items-center justify-between py-2" :class="{'border-b': type!=='infant'}">
-                        <div class="text-sm font-medium capitalize" x-text="type"></div>
-                        <div class="flex items-center gap-3">
-                            <button type="button" @click="adjust(type,'-')" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center"><i class="fas fa-minus text-xs"></i></button>
-                            <span class="w-5 text-center text-sm" x-text="passengers[type]"></span>
-                            <button type="button" @click="adjust(type,'+')" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center"><i class="fas fa-plus text-xs"></i></button>
+                            <div class="relative" x-data="{ showClass: false }">
+                                <button @click="showClass = !showClass" class="dropdown-trigger class-trigger">
+                                    <i class="fas fa-chair"></i>
+                                    <span x-text="travelClass"></span>
+                                    <i class="fas fa-chevron-down text-xs ml-auto"></i>
+                                </button>
+                                <div x-show="showClass" x-cloak @click.outside="showClass = false" class="dropdown-panel" x-transition>
+                                    <div class="space-y-1">
+                                        <template x-for="cls in classes" :key="cls">
+                                            <button type="button" class="class-option" @click="travelClass = cls; showClass = false">
+                                                <span x-text="cls"></span>
+                                                <i class="fas fa-check text-primary" x-show="travelClass === cls"></i>
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </template>
-                <button type="button" class="mt-3 w-full py-2 bg-primary text-white rounded-md text-sm font-semibold hover:brightness-110" @click="showPassengers=false">Done</button>
-            </div>
-        </div>
-        
-        <div class="lg:col-span-3">
-            <button class="primary-action-button h-full" @click="submitStandard()">
-                <i class="fas fa-search"></i><span>Search Flights</span>
-            </button>
-        </div>
-    </div>
-</div>
+
+                    <!-- Standard Form, single-row horizontal layout -->
+                    <div x-show="mode==='standard'" x-cloak class="mt-4">
+                        <div class="combined-labels">
+                            <!-- Label di atas From/To -->
+                            <div class="labels-grid">
+                                <span>From</span>
+                                <span>To</span>
+                            </div>
+                            <!-- Label di atas Departure/Return -->
+                            <div class="labels-grid">
+                                <span>Departure date</span>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" class="accent-white" :checked="tripType==='roundtrip'" @change="tripType=$event.target.checked?'roundtrip':'oneway'; if(tripType==='oneway') returnDate=''; $nextTick(()=>initPickers())">
+                                    Return Date
+                                </label>
+                            </div>
+                            <!-- Placeholder untuk kolom tombol -->
+                            <div></div>
+                        </div>
+                        <div class="search-row">
+                            <!-- Combined route box -->
+                            <div>
+                                <div class="combined-input">
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-plane-departure"></i>
+                                        <input class="combo-input" type="text" x-model="origin" @input="filter('origin',$event.target.value)" @focus="focusField='origin'; showSuggest=true" @click.outside="hideSuggest('origin')" placeholder="Jakarta (JKTA)">
+                                    </div>
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-plane-arrival"></i>
+                                        <input class="combo-input" type="text" x-model="destination" @input="filter('destination',$event.target.value)" @focus="focusField='destination'; showSuggest=true" @click.outside="hideSuggest('destination')" placeholder="Singapore (SIN)">
+                                    </div>
+                                    <div class="center-divider"></div>
+                                    <button type="button" class="swap-btn swap-center" @click="[origin,destination]=[destination,origin]"><i class="fas fa-arrows-rotate"></i></button>
+                                </div>
+                            </div>
+                            <!-- Combined dates box -->
+                            <div>
+                                <div class="combined-input">
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-calendar-day"></i>
+                                        <input class="combo-input" type="text" x-ref="departpicker" x-model="departureDate" readonly placeholder="DD MMM YYYY">
+                                    </div>
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-calendar-day"></i>
+                                        <input class="combo-input" type="text" x-ref="returnpicker" x-model="returnDate" :disabled="tripType==='oneway'" readonly placeholder="DD MMM YYYY">
+                                    </div>
+                                    <div class="center-divider"></div>
+                                </div>
+                            </div>
+                            <!-- Search button -->
+                            <div class="flex justify-center items-center">
+                                <button type="button" class="search-fab" @click="submitStandard()"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Dropdowns dipindah ke bawah masing-masing chip di atas -->
+                    </div>
                     </div>
 
                     <!-- Multi-city -->
-                    <div x-show="mode==='multicity'" class="mt-6 space-y-4">
+                    <div x-show="mode==='multicity'" x-cloak class="mt-6 space-y-4">
                         <template x-for="(seg,idx) in segments" :key="idx">
                             <div class="grid gap-4 md:grid-cols-4">
                                 <div class="relative">
@@ -1077,8 +1379,9 @@
 
                     <!-- Quick Links -->
                     <div class="quick-links mt-6">
-                        <a href="#ideas">Discover Flight Ideas</a>
-                        <a href="#price-alert">Price Alert</a>
+                        <span class="ql-label">Looking for</span>
+                        <a href="#ideas"><i class="fas fa-globe"></i> <span>Discover Flight Ideas</span></a>
+                        <a href="#price-alert"><i class="far fa-bell"></i> <span>Price Alert</span></a>
                     </div>
                     <!-- Social Proof -->
                     <div class="social-proof">
@@ -1088,14 +1391,26 @@
                         <img src="{{ asset('image/citilink.png') }}" alt="Citilink" loading="lazy">
                     </div>
                 </div>
+                <!-- 4-logo rotator inside hero -->
+                <div class="mt-6 flex justify-center" x-data="logoRotator()" x-init="start()">
+                    <div class="hero-logos-frame">
+                        <span class="trusted-label">Trusted by</span>
+                        <span class="trusted-divider">|</span>
+                        <div class="hero-logos">
+                            <template x-for="(logo, idx) in currentSet" :key="idx">
+                                <img :src="logo.src" :alt="logo.alt" loading="lazy">
+                            </template>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <script>
-        function flightSearch(){
+    function flightSearch(){
             return {
-                mode:'standard', tripType:'oneway', origin:'', destination:'', departureDate:'', returnDate:'', travelClass:'Economy',
+        mode:'standard', tripType:'oneway', origin:'Jakarta (JKTA)', destination:'Singapore (SIN)', departureDate:'', returnDate:'', travelClass:'Economy',
                 passengers:{adult:1,child:0,infant:0}, showPassengers:false, showClass:false, focusField:null, showSuggest:false,
                 classes:['Economy','Premium Economy','Business','First Class'],
                 list:['Jakarta (CGK)','Surabaya (SUB)','Denpasar (DPS)','Yogyakarta (YIA)','Medan (KNO)','Makassar (UPG)','Balikpapan (BPN)','Bandung (BDO)','Semarang (SRG)','Lombok (LOP)'],
@@ -1103,7 +1418,9 @@
                 segments:[{origin:'',destination:'',date:''}],
                 filter(field,q){ if(!q){ this.suggestions[field]=[]; return;} const s=q.toLowerCase(); this.suggestions[field]=this.list.filter(c=>c.toLowerCase().includes(s)).slice(0,8); },
                 hideSuggest(field){ setTimeout(()=>{ this.showSuggest=false; this.suggestions[field]=[]; },150); },
-                passengerSummary(){ const p=this.passengers; return `${p.adult} Adult${p.child?`, ${p.child} Child`:''}${p.infant?`, ${p.infant} Infant`:''}`; },
+                passengerSummary(){ const p=this.passengers; return `${p.adult} Adult, ${p.child} Child, ${p.infant} Infant (on lap)`; },
+                isPlusDisabled(type){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; return this.passengers[type] >= lim[type][1]; },
+                isMinusDisabled(type){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; return this.passengers[type] <= lim[type][0]; },
                 adjust(type,op){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; if(op==='+' && this.passengers[type]<lim[type][1]) this.passengers[type]++; if(op==='-' && this.passengers[type]>lim[type][0]) this.passengers[type]--; },
                 addSegment(){ this.segments.push({origin:'',destination:'',date:''}); },
                 removeSegment(i){ this.segments.splice(i,1); },
@@ -1112,9 +1429,37 @@
                 submitMulticity(){ if(this.segments.some(s=>!s.origin||!s.destination||!s.date)){ alert('Lengkapi semua segmen'); return;} const params=new URLSearchParams({type:'flights',multi:JSON.stringify(this.segments),class:this.travelClass, pax:this.passengerSummary()}); window.location.href='/search?'+params.toString(); }
             }
         }
+    function logoRotator(){
+        return {
+            logos: [
+                {src: '/image/garuda_indonesia.png', alt: 'Garuda Indonesia'},
+                {src: '/image/airasia.png', alt: 'AirAsia'},
+                {src: '/image/citilink.png', alt: 'Citilink'},
+                {src: '/image/singapore_airlines.png', alt: 'Singapore Airlines'},
+                {src: '/image/qatar_airways.png', alt: 'Qatar Airways'},
+                {src: '/image/emirates.png', alt: 'Emirates'},
+                {src: '/image/batik_air.png', alt: 'Batik Air'},
+                {src: '/image/sriwijaya_air.png', alt: 'Sriwijaya Air'},
+                {src: '/image/lion_air.png', alt: 'Lion Air'},
+                {src: '/image/pelita_air.png', alt: 'Pelita Air'},
+            ],
+            index: 0,
+            currentSet: [],
+            start(){ this.render(); this.timer = setInterval(()=>this.next(), 2000); },
+            next(){ this.index = (this.index + 4) % this.logos.length; this.render(); },
+            render(){ this.currentSet = this.logos.slice(this.index, this.index + 4); if(this.currentSet.length < 4){ this.currentSet = this.currentSet.concat(this.logos.slice(0, 4 - this.currentSet.length)); } },
+            timer: null,
+            stop(){ if(this.timer) clearInterval(this.timer); }
+        }
+    }
     </script>
 
     <main class="main-content bg-white relative z-10">
+        <div class="py-12 bg-white">
+            <div class="max-w-6xl mx-auto">
+                <!-- Scroller moved to hero as 4-logo rotator -->
+            </div>
+        </div>
         <!-- Partner Logos Section -->
         @php
             $partnerLogos = app(App\Http\Controllers\PartnerController::class)->getPartnerLogos();
