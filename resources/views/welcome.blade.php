@@ -515,6 +515,9 @@
         border: 1px solid rgba(0,0,0,.06);
         box-shadow: 0 6px 16px -6px rgba(0,0,0,.35);
     }
+    /* Spin animation for swap icon */
+    .swap-btn i.spinning { animation: swap-spin .6s ease-in-out; }
+    @keyframes swap-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     .swap-btn:hover { filter: brightness(0.98); }
     .search-fab {
         width: 52px; height: 52px;
@@ -863,6 +866,19 @@
     .search-fab { width: 44px; height: 44px; font-size: 1.1rem; }
     .combined-input, .combined-field, .combo-input { min-width: 0; }
 
+    /* Suggestion dropdown for airports */
+    .suggest-panel { position: absolute; left: 0; right: 0; top: calc(100% + 10px); background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: 0 18px 30px -12px rgba(0,0,0,.25); overflow: hidden; z-index: 40; }
+    .suggest-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid #f3f4f6; }
+    .suggest-title { font-weight: 700; color: #111827; font-size: .95rem; }
+    .suggest-clear { color: #0d74d6; font-weight: 600; font-size: .85rem; display: inline-flex; align-items: center; gap: 6px; }
+    .suggest-body { max-height: 360px; overflow: auto; padding: 6px 0; }
+    .suggest-item { width: 100%; text-align: left; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 10px 14px; background: transparent; border: none; cursor: pointer; }
+    .suggest-item:hover { background: #f9fafb; }
+    .suggest-item i { color: #6b7280; }
+    .suggest-name { font-weight: 700; color: #111827; font-size: .95rem; display: flex; align-items: baseline; gap: .5rem; }
+    .suggest-code { color: #6b7280; font-weight: 700; letter-spacing: .5px; }
+    .suggest-sub { color: #6b7280; font-size: .85rem; margin-top: 2px; }
+
     /* Date box: nudge to the right a bit */
     .search-row > div:nth-child(2) .combined-input { margin-left: 40px; }
 
@@ -891,10 +907,59 @@
     .combined-labels { font-size: .75rem; margin-bottom: .25rem; }
     .labels-grid { padding: 0 .25rem; }
     .combined-labels, .combined-labels span, .combined-labels label { color: #fff !important; }
+
+    /* Hotels: single connected bar with 3 equal segments */
+    .search-row-hotels { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: .375rem; }
+    .search-row-hotels .combined-input { width: 100%; max-width: none; }
+    .combined-input.three { grid-template-columns: 1fr 1fr 1fr; border-radius: 9999px; position: relative; }
+    .combined-input.three .v-divider { position: absolute; top: 12%; bottom: 12%; width: 2px; background: rgba(0,0,0,.12); border-radius: 2px; }
+    .combined-input.three .v-divider.div1 { left: 33.3333%; transform: translateX(-1px); }
+    .combined-input.three .v-divider.div2 { left: 66.6667%; transform: translateX(-1px); }
+    .combo-button { width: 100%; text-align: left; border: 0; background: transparent; padding: 10px 8px 10px 30px; font-size: .8rem; color: #111827; cursor: pointer; }
+    .combo-button:focus { outline: none; }
+
+    /* Hotels chips (Hotels | Villa | Apartment) */
+    .stay-type { display:inline-flex; align-items:center; gap:.6rem; margin-top:0; margin-bottom:2.5rem; }
+    .stay-chip { display:inline-flex; align-items:center; gap:.45rem; padding:.5rem .8rem; border-radius:9999px; background: rgba(0,0,0,.35); color:#fff; font-weight:700; border:1px solid rgba(255,255,255,.3); cursor:pointer; transition: .2s; }
+    .stay-chip i { font-size:.95rem; }
+    .stay-chip.active { background: var(--primary); border-color: transparent; }
+
+    /* Nudge Hotels labels slightly right for Date and Guests */
+    .hotel-ui .combined-labels > .labels-grid:nth-of-type(1) span:nth-child(2) { margin-left: 10px; }
+    .hotel-ui .combined-labels > .labels-grid:nth-of-type(2) span:nth-child(1) { margin-left: 10px; }
+    /* Nudge the date and guests text inside segments a bit to the right */
+    .combined-input.three > .combined-field:nth-child(2) .combo-button,
+    .combined-input.three > .combined-field:nth-child(3) .combo-button { padding-left: 40px; }
+
+    /* Hotels date segment focus styling */
+    .combined-input.three .date-field { position: relative; border-radius: 9999px; }
+    .combined-input.three .date-field.is-open { box-shadow: inset 0 0 0 2px #1a73e8; background: #fff; }
+
+    /* Flatpickr hotel theme (approximate reference) */
+    .flatpickr-calendar.hotel { border:1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 18px 40px -12px rgba(0,0,0,.2); overflow: hidden; }
+    .flatpickr-calendar.hotel .flatpickr-months { padding: 6px 8px; }
+    .flatpickr-calendar.hotel .flatpickr-current-month { font-weight: 700; }
+    .flatpickr-calendar.hotel .flatpickr-weekdaycontainer span { font-weight: 600; color:#64748b; }
+    .flatpickr-calendar.hotel .flatpickr-day.inRange { background: #e9f2ff; border-color: #e9f2ff; }
+    .flatpickr-calendar.hotel .flatpickr-day.startRange,
+    .flatpickr-calendar.hotel .flatpickr-day.endRange,
+    .flatpickr-calendar.hotel .flatpickr-day.selected { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .flatpickr-calendar.hotel .flatpickr-day.startRange { border-radius: 999px 0 0 999px; }
+    .flatpickr-calendar.hotel .flatpickr-day.endRange { border-radius: 0 999px 999px 0; }
+    .flatpickr-calendar.hotel .flatpickr-day.selected { border-radius: 999px; }
+    .flatpickr-calendar.hotel .flatpickr-next-month, 
+    .flatpickr-calendar.hotel .flatpickr-prev-month { color:#1a73e8; }
+
+    /* Custom header above calendar */
+    .hotel-cal-header { padding: 14px 16px; border-bottom:1px solid #e5e7eb; background:#fff; }
+    .hotel-cal-title { font-size: 1.4rem; font-weight: 800; color:#0f172a; }
+    .hotel-cal-sub { display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding-top: 10px; }
+    .hotel-cal-sub .label { font-size: .9rem; color:#6b7280; font-weight:600; }
+    .hotel-cal-sub .val { font-size: 1rem; color:#0f172a; font-weight:800; }
     /* --- HERO 4-UP LOGO ROTATOR (switches every 2s) --- */
     .hero-logos-frame { display: inline-flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 16px; border: 1.5px solid #e5e7eb; background: #fff; box-shadow: 0 2px 16px -8px rgba(0,0,0,.08); }
     .trusted-label { color: #000000ff; font-weight: 600; font-size: .9rem; letter-spacing: .3px; white-space: nowrap; }
-    .trusted-divider { color: rgba(0, 0, 0, 0.6); }
+    .trusted-divider { color: #000; }
     .hero-logos { display: flex; align-items: center; justify-content: center; gap: 1.25rem; flex-wrap: nowrap; }
     .hero-logos img { max-height: 40px; width: auto; object-fit: contain; filter: none; opacity: 1; transition: transform .2s ease, opacity .2s ease; }
     .hero-logos img:hover { transform: scale(1.04); }
@@ -955,17 +1020,16 @@
         
         <!-- Header Level 2 -->
         <div class="inner">
-            <a href="public/images/logotick.png" class="site-logo" aria-label="Home">
+            <a href="/" class="site-logo" aria-label="Home">
                 <span class="ticket-icon">
-                    <img src="/images/logotick.png" alt="Ticket Icon" />
+                    <img src="{{ asset('images/logo.png') }}" alt="MyTickets" />
                 </span>
-                
             </a>
             <div class="product-tabs" aria-label="Product Tabs">
-                <button class="product-tab active" id="flightsTab"><i class="fas fa-plane"></i><span>Flights</span></button>
-                <button class="product-tab" id="hotelsTab"><i class="fas fa-hotel"></i><span>Hotels</span></button>
-                <button class="product-tab" id="trainsTab"><i class="fas fa-train"></i><span>Trains</span></button>
-                <button class="product-tab" id="busTab"><i class="fas fa-bus"></i><span>Bus & Travel</span></button>
+                <button class="product-tab active" id="flightsTab" onclick="selectProduct('flights')"><i class="fas fa-plane"></i><span>Flights</span></button>
+                <button class="product-tab" id="hotelsTab" onclick="selectProduct('hotels')"><i class="fas fa-hotel"></i><span>Hotels</span></button>
+                <!-- Trains tab removed per request -->
+                <button class="product-tab" id="busTab" onclick="selectProduct('bus')"><i class="fas fa-bus"></i><span>Bus & Travel</span></button>
             </div>
             <div class="nav-links">
                 <a href="#discover">Discover</a>
@@ -1211,10 +1275,10 @@
     <section class="bg-hero min-h-[640px] flex items-center justify-center relative">
         <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/60"></div>
         <div class="hero-content">
-            <div class="search-container" x-data="flightSearch()" x-init="initPickers()">
+            <div class="search-container" x-data="flightSearch()" x-init="init()">
                 <div class="search-card">
-                    <!-- Top row: trip type (left) and control chips (right) -->
-                    <div class="flex items-center justify-between gap-4">
+                    <!-- Top row: trip type (left) and control chips (right) - Flights only -->
+                    <div class="flex items-center justify-between gap-4" x-show="product==='flights'" x-cloak>
                         <div class="flex items-center gap-2 text-sm font-medium text-white/90">
                             <div class="trip-type-switch">
                                 <button :class="{'active':mode==='standard'}" @click="mode='standard'">One-way / Round-trip</button>
@@ -1282,8 +1346,8 @@
                         </div>
                     </div>
 
-                    <!-- Standard Form, single-row horizontal layout -->
-                    <div x-show="mode==='standard'" x-cloak class="mt-4">
+                    <!-- Flights Form -->
+                    <div x-show="product==='flights' && mode==='standard'" x-cloak class="mt-4">
                         <div class="combined-labels">
                             <!-- Label di atas From/To -->
                             <div class="labels-grid">
@@ -1303,18 +1367,61 @@
                         </div>
                         <div class="search-row">
                             <!-- Combined route box -->
-                            <div>
+                            <div class="relative" @click.outside="hideSuggest(focusField)">
                                 <div class="combined-input">
                                     <div class="combined-field">
                                         <i class="icon fas fa-plane-departure"></i>
-                                        <input class="combo-input" type="text" x-model="origin" @input="filter('origin',$event.target.value)" @focus="focusField='origin'; showSuggest=true" @click.outside="hideSuggest('origin')" placeholder="Jakarta (JKTA)">
+                                        <input class="combo-input" type="text" x-model="origin" @input="filter('origin',$event.target.value)" @focus="focusField='origin'; showSuggest=true; filter('origin',$event.target.value || '')" placeholder="Jakarta (JKTA)">
                                     </div>
                                     <div class="combined-field">
                                         <i class="icon fas fa-plane-arrival"></i>
-                                        <input class="combo-input" type="text" x-model="destination" @input="filter('destination',$event.target.value)" @focus="focusField='destination'; showSuggest=true" @click.outside="hideSuggest('destination')" placeholder="Singapore (SIN)">
+                                        <input class="combo-input" type="text" x-model="destination" @input="filter('destination',$event.target.value)" @focus="focusField='destination'; showSuggest=true; filter('destination',$event.target.value || '')" placeholder="Singapore (SIN)">
                                     </div>
                                     <div class="center-divider"></div>
-                                    <button type="button" class="swap-btn swap-center" @click="[origin,destination]=[destination,origin]"><i class="fas fa-arrows-rotate"></i></button>
+                                    <button type="button" class="swap-btn swap-center" @click="spinSwap($event)"><i class="fas fa-arrows-rotate"></i></button>
+                                </div>
+                                <!-- Airports Suggestion Panel -->
+                                <div class="suggest-panel" x-show="showSuggest" x-cloak x-transition>
+                                    <div class="suggest-header">
+                                        <div class="suggest-title">Your Recent Searches</div>
+                                        <button type="button" class="suggest-clear" @click="clearRecents()"><i class="fas fa-eraser"></i> Clear</button>
+                                    </div>
+                                    <div class="suggest-body" x-show="recentSearches.length">
+                                        <template x-for="(r, idx) in recentSearches" :key="r.ts + '-' + idx">
+                                            <button type="button" class="suggest-item" @click="selectRecent(r)">
+                                                <i class="fas fa-magnifying-glass"></i>
+                                                <div>
+                                                    <div class="suggest-name">
+                                                        <span x-text="r.from + ' → ' + r.to"></span>
+                                                    </div>
+                                                    <div class="suggest-sub">
+                                                        <span x-text="(r.date||'') + (r.cabin ? ' | '+r.cabin : '')"></span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </template>
+                                    </div>
+                                    <div class="suggest-header">
+                                        <div class="suggest-title">Popular Cities or Airports</div>
+                                        <button type="button" class="suggest-clear" @click="showSuggest=false"><i class="fas fa-times"></i> Close</button>
+                                    </div>
+                                    <div class="suggest-body">
+                                        <template x-for="item in suggestions[focusField]" :key="(item.code||'ALL') + '-' + item.label">
+                                            <button type="button" class="suggest-item" @click="selectSuggestion(item)">
+                                                <i class="fas fa-plane"></i>
+                                                <div>
+                                                    <div class="suggest-name">
+                                                        <span x-text="item.label"></span>
+                                                        <span class="suggest-code" x-text="item.code"></span>
+                                                    </div>
+                                                    <div class="suggest-sub">
+                                                        <span x-text="item.city"></span><span x-show="item.city && item.country">, </span><span x-text="item.country"></span>
+                                                        <template x-if="item.all"><span> (All Airports)</span></template>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </template>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Combined dates box -->
@@ -1339,10 +1446,193 @@
 
                         <!-- Dropdowns dipindah ke bawah masing-masing chip di atas -->
                     </div>
+                    
+                    <!-- Hotels Form -->
+                    <div x-show="product==='hotels'" x-cloak class="mt-0 hotel-ui">
+                        <!-- Stay type chips -->
+                        <div class="stay-type" x-data="{ }">
+                            <button type="button" class="stay-chip" :class="{'active': stayType==='hotel'}" @click="stayType='hotel'"><i class="fas fa-hotel"></i> <span>Hotels</span></button>
+                            <button type="button" class="stay-chip" :class="{'active': stayType==='villa'}" @click="stayType='villa'"><i class="fas fa-building"></i> <span>Villa</span></button>
+                            <button type="button" class="stay-chip" :class="{'active': stayType==='apartment'}" @click="stayType='apartment'"><i class="fas fa-city"></i> <span>Apartment</span></button>
+                        </div>
+                        <div class="combined-labels">
+                            <div class="labels-grid"><span>City, destination, or hotel name</span><span>Check-in & Check-out Dates</span></div>
+                            <div class="labels-grid"><span>Guests and Rooms</span><span></span></div>
+                            <div></div>
+                        </div>
+                        <div class="search-row-hotels">
+                            <div class="relative" @click.outside="hideSuggest(focusField)">
+                                <div class="combined-input three">
+                                    <!-- Destination -->
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-location-dot"></i>
+                                        <input class="combo-input" type="text" x-model="hotelCity" @input="filter('hotelCity',$event.target.value)" @focus="focusField='hotelCity'; showSuggest=true; filter('hotelCity',$event.target.value||'')" placeholder="City, hotel, place to go">
+                                    </div>
+                                    <!-- Date range (button lookalike) -->
+                                    <div class="combined-field date-field" x-ref="hotelDateField" :class="{'is-open': hotelRangeOpen}">
+                                        <i class="icon fas fa-calendar-day"></i>
+                                        <button type="button" class="combo-button" @click="openHotelRange()">
+                                            <span x-text="hotelDateLabel()"></span>
+                                        </button>
+                                        <input type="text" x-ref="hotelRange" class="hidden" />
+                                    </div>
+                                    <!-- Guests & Rooms (button lookalike) -->
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-user-group"></i>
+                                        <div class="relative w-full" x-data="{open:false}">
+                                            <button type="button" class="combo-button" @click="open = !open" x-text="hotelGuestsSummary()"></button>
+                                            <div class="dropdown-panel" x-show="open" x-cloak @click.outside="open=false" x-transition>
+                                                <div class="space-y-2">
+                                                    <div class="passenger-row">
+                                                        <div class="left"><i class="fas fa-bed"></i><div><div class="type-title">Rooms</div></div></div>
+                                                        <div class="counter">
+                                                            <button type="button" class="counter-btn" @click="rooms=Math.max(1,rooms-1)"><i class="fas fa-minus"></i></button>
+                                                            <span class="count" x-text="rooms"></span>
+                                                            <button type="button" class="counter-btn" @click="rooms=Math.min(9,rooms+1)"><i class="fas fa-plus"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="passenger-row">
+                                                        <div class="left"><i class="fas fa-user"></i><div><div class="type-title">Guests</div></div></div>
+                                                        <div class="counter">
+                                                            <button type="button" class="counter-btn" @click="hotelGuests=Math.max(1,hotelGuests-1)"><i class="fas fa-minus"></i></button>
+                                                            <span class="count" x-text="hotelGuests"></span>
+                                                            <button type="button" class="counter-btn" @click="hotelGuests=Math.min(16,hotelGuests+1)"><i class="fas fa-plus"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3"><button type="button" class="primary-action-button w-full" @click="open=false">Done</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Vertical dividers -->
+                                    <div class="v-divider div1"></div>
+                                    <div class="v-divider div2"></div>
+                                </div>
+                                <!-- Suggestions for destination -->
+                                <div class="suggest-panel" x-show="showSuggest && focusField==='hotelCity'" x-cloak x-transition>
+                                    <div class="suggest-header"><div class="suggest-title">Popular Destinations</div><button type="button" class="suggest-clear" @click="showSuggest=false"><i class="fas fa-times"></i> Close</button></div>
+                                    <div class="suggest-body">
+                                        <template x-for="item in suggestions[focusField]" :key="(item.code||'CITY') + '-' + item.label">
+                                            <button type="button" class="suggest-item" @click="selectSuggestion(item)">
+                                                <i class="fas fa-location-dot"></i>
+                                                <div>
+                                                    <div class="suggest-name"><span x-text="item.city || item.label"></span></div>
+                                                    <div class="suggest-sub"><span x-text="item.country"></span></div>
+                                                </div>
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button type="button" class="search-fab" @click="submitHotel()"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Multi-city -->
-                    <div x-show="mode==='multicity'" x-cloak class="mt-6 space-y-4">
+                    <!-- Trains Form -->
+                    <div x-show="product==='trains'" x-cloak class="mt-4">
+                        <div class="combined-labels"><div class="labels-grid"><span>From (Station/City)</span><span>To (Station/City)</span></div><div class="labels-grid"><span>Departure date</span><span></span></div><div></div></div>
+                        <div class="search-row">
+                            <div class="relative" @click.outside="hideSuggest(focusField)">
+                                <div class="combined-input">
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-train"></i>
+                                        <input class="combo-input" type="text" x-model="trainFrom" @input="filter('trainFrom',$event.target.value)" @focus="focusField='trainFrom'; showSuggest=true; filter('trainFrom',$event.target.value||'')" placeholder="Origin station or city">
+                                    </div>
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-train"></i>
+                                        <input class="combo-input" type="text" x-model="trainTo" @input="filter('trainTo',$event.target.value)" @focus="focusField='trainTo'; showSuggest=true; filter('trainTo',$event.target.value||'')" placeholder="Destination station or city">
+                                    </div>
+                                    <div class="center-divider"></div>
+                                </div>
+                                <div class="suggest-panel" x-show="showSuggest && (focusField==='trainFrom' || focusField==='trainTo')" x-cloak x-transition>
+                                    <div class="suggest-header"><div class="suggest-title">Popular Cities</div><button type="button" class="suggest-clear" @click="showSuggest=false"><i class="fas fa-times"></i> Close</button></div>
+                                    <div class="suggest-body">
+                                        <template x-for="item in suggestions[focusField]" :key="(item.code||'CITY') + '-' + item.label">
+                                            <button type="button" class="suggest-item" @click="selectSuggestion(item)">
+                                                <i class="fas fa-train"></i>
+                                                <div>
+                                                    <div class="suggest-name"><span x-text="item.city || item.label"></span></div>
+                                                    <div class="suggest-sub"><span x-text="item.country"></span></div>
+                                                </div>
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="combined-input">
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-calendar-day"></i>
+                                        <input class="combo-input" type="text" x-ref="trainDate" x-model="trainDate" readonly placeholder="DD MMM YYYY">
+                                    </div>
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-user"></i>
+                                        <input class="combo-input" type="number" min="1" max="10" x-model.number="trainPassengers" placeholder="Passengers">
+                                    </div>
+                                    <div class="center-divider"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button type="button" class="search-fab" @click="submitTrains()"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bus & Travel Form -->
+                    <div x-show="product==='bus'" x-cloak class="mt-4">
+                        <div class="combined-labels"><div class="labels-grid"><span>From (City/Terminal)</span><span>To (City/Terminal)</span></div><div class="labels-grid"><span>Departure date</span><span></span></div><div></div></div>
+                        <div class="search-row">
+                            <div class="relative" @click.outside="hideSuggest(focusField)">
+                                <div class="combined-input">
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-bus"></i>
+                                        <input class="combo-input" type="text" x-model="busFrom" @input="filter('busFrom',$event.target.value)" @focus="focusField='busFrom'; showSuggest=true; filter('busFrom',$event.target.value||'')" placeholder="Origin city or terminal">
+                                    </div>
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-bus"></i>
+                                        <input class="combo-input" type="text" x-model="busTo" @input="filter('busTo',$event.target.value)" @focus="focusField='busTo'; showSuggest=true; filter('busTo',$event.target.value||'')" placeholder="Destination city or terminal">
+                                    </div>
+                                    <div class="center-divider"></div>
+                                </div>
+                                <div class="suggest-panel" x-show="showSuggest && (focusField==='busFrom' || focusField==='busTo')" x-cloak x-transition>
+                                    <div class="suggest-header"><div class="suggest-title">Popular Cities</div><button type="button" class="suggest-clear" @click="showSuggest=false"><i class="fas fa-times"></i> Close</button></div>
+                                    <div class="suggest-body">
+                                        <template x-for="item in suggestions[focusField]" :key="(item.code||'CITY') + '-' + item.label">
+                                            <button type="button" class="suggest-item" @click="selectSuggestion(item)">
+                                                <i class="fas fa-bus"></i>
+                                                <div>
+                                                    <div class="suggest-name"><span x-text="item.city || item.label"></span></div>
+                                                    <div class="suggest-sub"><span x-text="item.country"></span></div>
+                                                </div>
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="combined-input">
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-calendar-day"></i>
+                                        <input class="combo-input" type="text" x-ref="busDate" x-model="busDate" readonly placeholder="DD MMM YYYY">
+                                    </div>
+                                    <div class="combined-field">
+                                        <i class="icon fas fa-user"></i>
+                                        <input class="combo-input" type="number" min="1" max="10" x-model.number="busPassengers" placeholder="Passengers">
+                                    </div>
+                                    <div class="center-divider"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button type="button" class="search-fab" @click="submitBus()"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Multi-city (Flights) -->
+                    <div x-show="product==='flights' && mode==='multicity'" x-cloak class="mt-6 space-y-4">
                         <template x-for="(seg,idx) in segments" :key="idx">
                             <div class="grid gap-4 md:grid-cols-4">
                                 <div class="relative">
@@ -1370,21 +1660,21 @@
                         </div>
                     </div>
 
-                    <!-- Quick Links -->
-                    <div class="quick-links mt-6">
+                    <!-- Quick Links (Flights only) -->
+                    <div class="quick-links mt-6" x-show="product==='flights'" x-cloak>
                         <span class="ql-label">Looking for</span>
                         <a href="#ideas"><i class="fas fa-globe"></i> <span>Discover Flight Ideas</span></a>
                         <a href="#price-alert"><i class="far fa-bell"></i> <span>Price Alert</span></a>
                     </div>
                 </div>
                 <!-- 4-logo rotator inside hero -->
-                <div class="mt-6 flex justify-center" x-data="logoRotator()" x-init="start()">
+                <div class="mt-6 flex justify-center" x-data="logoRotator()" :data-product="product" x-init="start(); setProduct($el.getAttribute('data-product'))" x-cloak>
                     <div class="hero-logos-frame">
                         <span class="trusted-label">Trusted by</span>
                         <span class="trusted-divider">|</span>
                         <div class="hero-logos">
                             <template x-for="(logo, idx) in currentSet" :key="idx">
-                                <img :src="logo.src" :alt="logo.alt" loading="lazy">
+                                <img :src="logo.src" :alt="logo.alt" loading="lazy" x-on:error="$el.style.display='none'">
                             </template>
                         </div>
                     </div>
@@ -1395,45 +1685,262 @@
 
     <script>
     function flightSearch(){
-            return {
-        mode:'standard', tripType:'oneway', origin:'Jakarta (JKTA)', destination:'Singapore (SIN)', departureDate:'', returnDate:'', travelClass:'Economy',
-                passengers:{adult:1,child:0,infant:0}, showPassengers:false, showClass:false, focusField:null, showSuggest:false,
-                classes:['Economy','Premium Economy','Business','First Class'],
-                list:['Jakarta (CGK)','Surabaya (SUB)','Denpasar (DPS)','Yogyakarta (YIA)','Medan (KNO)','Makassar (UPG)','Balikpapan (BPN)','Bandung (BDO)','Semarang (SRG)','Lombok (LOP)'],
-                suggestions:{origin:[],destination:[]},
-                segments:[{origin:'',destination:'',date:''}],
-                filter(field,q){ if(!q){ this.suggestions[field]=[]; return;} const s=q.toLowerCase(); this.suggestions[field]=this.list.filter(c=>c.toLowerCase().includes(s)).slice(0,8); },
-                hideSuggest(field){ setTimeout(()=>{ this.showSuggest=false; this.suggestions[field]=[]; },150); },
-                passengerSummary(){ const p=this.passengers; return `${p.adult} Adult, ${p.child} Child, ${p.infant} Infant (on lap)`; },
-                isPlusDisabled(type){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; return this.passengers[type] >= lim[type][1]; },
-                isMinusDisabled(type){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; return this.passengers[type] <= lim[type][0]; },
-                adjust(type,op){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; if(op==='+' && this.passengers[type]<lim[type][1]) this.passengers[type]++; if(op==='-' && this.passengers[type]>lim[type][0]) this.passengers[type]--; },
-                addSegment(){ this.segments.push({origin:'',destination:'',date:''}); },
-                removeSegment(i){ this.segments.splice(i,1); },
-                initPickers(){ const base={ dateFormat:'Y-m-d', minDate:'today'}; flatpickr(this.$refs.departpicker,{...base,onChange:(d)=>{this.departureDate=d[0].toISOString().split('T')[0];}}); if(this.tripType==='roundtrip'){ flatpickr(this.$refs.returnpicker,{...base,onChange:(d)=>{this.returnDate=d[0].toISOString().split('T')[0];}});} },
-                submitStandard(){ if(!this.origin||!this.destination||!this.departureDate){ alert('Lengkapi data'); return;} const params=new URLSearchParams({type:'flights',from:this.origin,to:this.destination,date:this.departureDate,trip:this.tripType,class:this.travelClass}); if(this.returnDate) params.append('return',this.returnDate); window.location.href='/search?'+params.toString(); },
-                submitMulticity(){ if(this.segments.some(s=>!s.origin||!s.destination||!s.date)){ alert('Lengkapi semua segmen'); return;} const params=new URLSearchParams({type:'flights',multi:JSON.stringify(this.segments),class:this.travelClass, pax:this.passengerSummary()}); window.location.href='/search?'+params.toString(); }
+        return {
+            // State
+            product:'flights',
+            mode:'standard', tripType:'oneway', origin:'Jakarta (JKTA)', destination:'Singapore (SIN)', departureDate:'', returnDate:'', travelClass:'Economy',
+            passengers:{adult:1,child:0,infant:0}, showPassengers:false, showClass:false, focusField:null, showSuggest:false,
+            classes:['Economy','Premium Economy','Business','First Class'],
+            // Airports dataset (local + international)
+            airports: [
+                // Indonesia (local + international)
+                {label:'Bandara Internasional Soekarno-Hatta', code:'CGK', city:'Tangerang', country:'Indonesia', popular:true},
+                {label:'Bandara Internasional I Gusti Ngurah Rai', code:'DPS', city:'Denpasar', country:'Indonesia', popular:true},
+                {label:'Bandara Internasional Juanda', code:'SUB', city:'Sidoarjo', country:'Indonesia'},
+                {label:'Bandara Internasional Sultan Hasanuddin', code:'UPG', city:'Makassar', country:'Indonesia'},
+                {label:'Bandara Internasional Kualanamu', code:'KNO', city:'Deli Serdang', country:'Indonesia'},
+                {label:'Bandara Internasional Yogyakarta', code:'YIA', city:'Kulon Progo', country:'Indonesia'},
+                {label:'Bandara Internasional Zainuddin Abdul Madjid', code:'LOP', city:'Lombok Tengah', country:'Indonesia'},
+                {label:'Bandara Internasional Sam Ratulangi', code:'MDC', city:'Manado', country:'Indonesia'},
+                {label:'Bandara Internasional SAMS Sepinggan', code:'BPN', city:'Balikpapan', country:'Indonesia'},
+                {label:'Bandara Internasional Hang Nadim', code:'BTH', city:'Batam', country:'Indonesia'},
+                {label:'Bandara Internasional Minangkabau', code:'PDG', city:'Padang Pariaman', country:'Indonesia'},
+                {label:'Bandara Internasional Sultan Syarif Kasim II', code:'PKU', city:'Pekanbaru', country:'Indonesia'},
+                {label:'Bandara Internasional Kertajati', code:'KJT', city:'Majalengka', country:'Indonesia'},
+                // All airports example
+                {label:'Kuala Lumpur', code:'', city:'Kuala Lumpur', country:'Malaysia', all:true, popular:true},
+                // World famous airports
+                {label:'Bandara Changi', code:'SIN', city:'Singapura', country:'Singapura', popular:true},
+                {label:'Bandara Internasional Dubai', code:'DXB', city:'Dubai', country:'Uni Emirat Arab', popular:true},
+                {label:'Bandara Heathrow', code:'LHR', city:'London', country:'Inggris', popular:true},
+                {label:'Bandara Internasional Tokyo (Haneda)', code:'HND', city:'Tokyo', country:'Jepang', popular:true},
+                {label:'Bandara Charles de Gaulle', code:'CDG', city:'Paris', country:'Prancis', popular:true},
+                {label:'Bandara Internasional Los Angeles', code:'LAX', city:'Los Angeles', country:'Amerika Serikat', popular:true},
+                {label:'Bandara Internasional John F. Kennedy', code:'JFK', city:'New York', country:'Amerika Serikat', popular:true},
+                {label:'Bandara Schiphol', code:'AMS', city:'Amsterdam', country:'Belanda'},
+                {label:'Bandara Internasional Incheon', code:'ICN', city:'Seoul', country:'Korea Selatan'},
+                {label:'Bandara Istanbul', code:'IST', city:'Istanbul', country:'Turki'},
+                {label:'Bandara Internasional Hong Kong', code:'HKG', city:'Hong Kong', country:'Hong Kong'},
+                {label:'Bandara Internasional Hamad', code:'DOH', city:'Doha', country:'Qatar'},
+                {label:'Bandara Frankfurt', code:'FRA', city:'Frankfurt', country:'Jerman'},
+                {label:'Bandara Internasional Suvarnabhumi', code:'BKK', city:'Bangkok', country:'Thailand'},
+                {label:'Bandara Sydney', code:'SYD', city:'Sydney', country:'Australia'},
+                {label:'Bandara Internasional Toronto Pearson', code:'YYZ', city:'Toronto', country:'Kanada'},
+            ],
+            suggestions:{origin:[],destination:[], hotelCity:[], trainFrom:[], trainTo:[], busFrom:[], busTo:[]},
+            recentSearches: JSON.parse(localStorage.getItem('recentSearches')||'[]'),
+            segments:[{origin:'',destination:'',date:''}],
+            // Hotels
+            stayType:'hotel', hotelCity:'', hotelCheckIn:'', hotelCheckOut:'', rooms:1, hotelGuests:2, hotelRangeOpen:false,
+            // Trains
+            trainFrom:'', trainTo:'', trainDate:'', trainPassengers:1,
+            // Bus
+            busFrom:'', busTo:'', busDate:'', busPassengers:1,
+            // Methods
+            init(){
+                // Default: mark Flights tab active
+                window.selectProduct = (name)=>{
+                    const ids = {flights:'flightsTab', hotels:'hotelsTab', bus:'busTab'}; // trains removed
+                    // buttons
+                    Object.values(ids).forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.remove('active'); });
+                    // prevent selecting 'trains' which is no longer available
+                    if(!ids[name]) { return; }
+                    const btn = document.getElementById(ids[name]); if(btn) btn.classList.add('active');
+                    this.product = name;
+                    this.$nextTick(()=>{
+                        this.initPickersForProduct();
+                        window.dispatchEvent(new CustomEvent('product:changed', { detail: { product: this.product } }));
+                    });
+                };
+                // First render
+                this.initPickersForProduct();
+                window.dispatchEvent(new CustomEvent('product:changed', { detail: { product: this.product } }));
+            },
+            popular(){ return this.airports.filter(a=>a.popular).slice(0,8); },
+            filter(field,q){
+                const s = (q||'').toLowerCase().trim();
+                if(!s){ this.suggestions[field] = this.popular(); return; }
+                const matches = this.airports.filter(a=>{
+                    return [a.label,a.city,a.country,(a.code||'')].some(v=> (v||'').toLowerCase().includes(s));
+                });
+                this.suggestions[field] = matches.slice(0,20);
+            },
+            hideSuggest(field){ setTimeout(()=>{ this.showSuggest=false; this.suggestions[field]=[]; },120); },
+            selectSuggestion(item){
+                const text = item.all
+                    ? `${item.city} (All Airports)`
+                    : `${item.city} (${item.code})`;
+                if(this.focusField==='origin') this.origin = text;
+                else if(this.focusField==='destination') this.destination = text;
+                else if(this.focusField==='hotelCity') this.hotelCity = item.city || item.label;
+                else if(this.focusField==='trainFrom') this.trainFrom = item.city || item.label;
+                else if(this.focusField==='trainTo') this.trainTo = item.city || item.label;
+                else if(this.focusField==='busFrom') this.busFrom = item.city || item.label;
+                else if(this.focusField==='busTo') this.busTo = item.city || item.label;
+                this.showSuggest = false;
+            },
+            clearRecents(){ this.recentSearches = []; localStorage.setItem('recentSearches','[]'); },
+            selectRecent(r){ this.origin = r.from; this.destination = r.to; this.departureDate = r.date||this.departureDate; this.travelClass = r.cabin||this.travelClass; this.showSuggest=false; },
+            passengerSummary(){ const p=this.passengers; return `${p.adult} Adult, ${p.child} Child, ${p.infant} Infant (on lap)`; },
+            isPlusDisabled(type){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; return this.passengers[type] >= lim[type][1]; },
+            isMinusDisabled(type){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; return this.passengers[type] <= lim[type][0]; },
+            adjust(type,op){ const lim={adult:[1,9],child:[0,8],infant:[0,4]}; if(op==='+' && this.passengers[type]<lim[type][1]) this.passengers[type]++; if(op==='-' && this.passengers[type]>lim[type][0]) this.passengers[type]--; },
+            addSegment(){ this.segments.push({origin:'',destination:'',date:''}); },
+            removeSegment(i){ this.segments.splice(i,1); },
+            initPickers(){ const base={ dateFormat:'Y-m-d', minDate:'today'}; flatpickr(this.$refs.departpicker,{...base,onChange:(d)=>{this.departureDate=d[0].toISOString().split('T')[0];}}); if(this.tripType==='roundtrip'){ flatpickr(this.$refs.returnpicker,{...base,onChange:(d)=>{this.returnDate=d[0].toISOString().split('T')[0];}});} },
+            initPickersForProduct(){
+                const base={ dateFormat:'Y-m-d', minDate:'today'};
+                // Flights
+                if(this.$refs.departpicker){ flatpickr(this.$refs.departpicker,{...base,onChange:(d)=>{this.departureDate=d[0].toISOString().split('T')[0];}}); }
+                if(this.$refs.returnpicker && this.tripType==='roundtrip'){ flatpickr(this.$refs.returnpicker,{...base,onChange:(d)=>{this.returnDate=d[0].toISOString().split('T')[0];}}); }
+                // Hotels: one range picker populating check-in/out
+                if(this.$refs.hotelRange){
+                    const anchor = this.$refs.hotelDateField || this.$el;
+                    const fp = flatpickr(this.$refs.hotelRange,{
+                        ...base,
+                        mode:'range',
+                        showMonths: 2,
+                        disableMobile: true,
+                        appendTo: document.body,
+                        position: 'below',
+                        positionElement: anchor,
+                        onOpen: ()=>{ this.hotelRangeOpen = true; },
+                        onClose: ()=>{ this.hotelRangeOpen = false; },
+                        onChange:(dates)=>{
+                            if(dates && dates.length){
+                                this.hotelCheckIn = dates[0] ? dates[0].toISOString().split('T')[0] : '';
+                                this.hotelCheckOut = dates[1] ? dates[1].toISOString().split('T')[0] : '';
+                            }
+                        }
+                    });
+                    if(fp && fp.calendarContainer){
+                        fp.calendarContainer.classList.add('hotel-range-calendar');
+                        // Manually position the calendar under the date field to avoid default top-left placement
+                        const place = ()=>{
+                            const rect = anchor.getBoundingClientRect();
+                            const scrollY = window.scrollY || document.documentElement.scrollTop;
+                            const scrollX = window.scrollX || document.documentElement.scrollLeft;
+                            fp.calendarContainer.style.position = 'absolute';
+                            fp.calendarContainer.style.top = (rect.bottom + scrollY + 8) + 'px';
+                            fp.calendarContainer.style.left = (rect.left + scrollX) + 'px';
+                            fp.calendarContainer.style.zIndex = 9999;
+                        };
+                        fp.config.onOpen.push(place);
+                        window.addEventListener('resize', place);
+                        window.addEventListener('scroll', place, true);
+                    }
+                }
+                if(this.$refs.trainDate){ flatpickr(this.$refs.trainDate,{...base,onChange:(d)=>{this.trainDate=d[0].toISOString().split('T')[0];}}); }
+                if(this.$refs.busDate){ flatpickr(this.$refs.busDate,{...base,onChange:(d)=>{this.busDate=d[0].toISOString().split('T')[0];}}); }
+            },
+            openHotelRange(){ if(this.$refs.hotelRange && this.$refs.hotelRange._flatpickr){ this.$refs.hotelRange._flatpickr.open(); } },
+            hotelGuestsSummary(){ const g=this.hotelGuests, r=this.rooms; return `${g} Guest${g>1?'s':''}, ${r} Room${r>1?'s':''}`; },
+            hotelDateLabel(){
+                if(!this.hotelCheckIn && !this.hotelCheckOut) return 'Check-in - Check-out';
+                try{
+                    const ci = new Date(this.hotelCheckIn);
+                    const co = this.hotelCheckOut ? new Date(this.hotelCheckOut) : null;
+                    const fmt = (d,opts)=> d.toLocaleDateString('en-US', opts || { month:'short', day:'numeric' });
+                    if(co && ci.getMonth()===co.getMonth() && ci.getFullYear()===co.getFullYear()){
+                        return `${fmt(ci)} - ${co.toLocaleDateString('en-US',{ day:'numeric' })}`;
+                    }
+                    return `${fmt(ci)}${co ? ' - ' + fmt(co) : ''}`;
+                }catch(e){
+                    return `${this.hotelCheckIn}${this.hotelCheckOut? ' - ' + this.hotelCheckOut: ''}`.trim();
+                }
+            },
+            submitStandard(){
+                if(!this.origin||!this.destination||!this.departureDate){ alert('Lengkapi data'); return; }
+                // save recent
+                const recent = {from:this.origin,to:this.destination,date:this.departureDate,cabin:this.travelClass, ts:Date.now()};
+                this.recentSearches = [recent, ...this.recentSearches].slice(0,5);
+                localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
+                // navigate
+                const params=new URLSearchParams({type:'flights',from:this.origin,to:this.destination,date:this.departureDate,trip:this.tripType,class:this.travelClass}); if(this.returnDate) params.append('return',this.returnDate); window.location.href='/search?'+params.toString();
+            },
+            submitMulticity(){ if(this.segments.some(s=>!s.origin||!s.destination||!s.date)){ alert('Lengkapi semua segmen'); return;} const params=new URLSearchParams({type:'flights',multi:JSON.stringify(this.segments),class:this.travelClass, pax:this.passengerSummary()}); window.location.href='/search?'+params.toString(); },
+            submitHotel(){ if(!this.hotelCity||!this.hotelCheckIn||!this.hotelCheckOut){ alert('Lengkapi data hotel'); return;} const params=new URLSearchParams({type:'hotels',city:this.hotelCity,checkin:this.hotelCheckIn,checkout:this.hotelCheckOut,rooms:this.rooms,guests:this.hotelGuests}); window.location.href='/search?'+params.toString(); },
+            submitTrains(){ if(!this.trainFrom||!this.trainTo||!this.trainDate){ alert('Lengkapi data kereta'); return;} const params=new URLSearchParams({type:'trains',from:this.trainFrom,to:this.trainTo,date:this.trainDate,pax:this.trainPassengers}); window.location.href='/search?'+params.toString(); },
+            submitBus(){ if(!this.busFrom||!this.busTo||!this.busDate){ alert('Lengkapi data bus'); return;} const params=new URLSearchParams({type:'bus',from:this.busFrom,to:this.busTo,date:this.busDate,pax:this.busPassengers}); window.location.href='/search?'+params.toString(); },
+            spinSwap(evt){
+                const icon = evt.currentTarget.querySelector('i');
+                if(icon){ icon.classList.remove('spinning'); void icon.offsetWidth; icon.classList.add('spinning'); setTimeout(()=>icon.classList.remove('spinning'), 650); }
+                [this.origin, this.destination] = [this.destination, this.origin];
             }
         }
+    }
     function logoRotator(){
         return {
-            logos: [
-                {src: '/image/garuda_indonesia.png', alt: 'Garuda Indonesia'},
-                {src: '/image/airasia.png', alt: 'AirAsia'},
-                {src: '/image/citilink.png', alt: 'Citilink'},
-                {src: '/image/singapore_airlines.png', alt: 'Singapore Airlines'},
-                {src: '/image/qatar_airways.png', alt: 'Qatar Airways'},
-                {src: '/image/emirates.png', alt: 'Emirates'},
-                {src: '/image/batik_air.png', alt: 'Batik Air'},
-                {src: '/image/sriwijaya_air.png', alt: 'Sriwijaya Air'},
-                {src: '/image/lion_air.png', alt: 'Lion Air'},
-                {src: '/image/pelita_air.png', alt: 'Pelita Air'},
-            ],
+            // Filenames per category
+            catalog: {
+                flights: [
+                    'qatar_airways.png',
+                    'emirates.png',
+                    'batik_air.png',
+                    'sriwijaya_air.png',
+                    'garuda_indonesia.png',
+                    'singapore_airlines.png',
+                    'airasia.png',
+                    'citilink.png',
+                    'lion_air.png',
+                    'pelita_air.png',
+                ],
+                hotels: [
+                    'agoda.png',
+                    'oyo_rooms.png',
+                    'reddoorz.png',
+                    'IHG.png',
+                    'accor.png',
+                    'archipelago.png',
+                    'hilton.png',
+                    'hyatt.png',
+                    'marriot.png',
+                    'santika.png',
+                    'swissbell.png',
+                    'traveloka.png',
+                    'plataran.png',
+                ],
+                trains: [
+                    'kai.png',
+                    'mrt.png',
+                    'whooshh.png',
+                ],
+                bus: [
+                    'rosalia_indah.png',
+                    'sinar_jaya.png',
+                    'bluebird.png',
+                    'harapan_jaya.png',
+                    'juragan_99.png',
+                    'kramat_jati.png',
+                    'white_horse.png',
+                    'damri.png',
+                ],
+            },
+            // Map product -> folder name
+            folderMap: { flights:'pesawat', hotels:'hotel', trains:'kereta', bus:'bus' },
+            category: 'flights',
             index: 0,
             currentSet: [],
-            start(){ this.render(); this.timer = setInterval(()=>this.next(), 2000); },
-            next(){ this.index = (this.index + 4) % this.logos.length; this.render(); },
-            render(){ this.currentSet = this.logos.slice(this.index, this.index + 4); if(this.currentSet.length < 4){ this.currentSet = this.currentSet.concat(this.logos.slice(0, 4 - this.currentSet.length)); } },
+            pretty(name){ return name.replace(/_/g,' ').replace(/\.png|\.svg|\.jpg|\.jpeg/gi,'').replace(/\b\w/g, c=>c.toUpperCase()); },
+            buildObjs(names, folder){ return names.map(n=>({ src: `/image/${folder}/${n}`, alt: this.pretty(n) })); },
+            list(){
+                const names = this.catalog[this.category];
+                const folder = this.folderMap[this.category] || 'pesawat';
+                const fallbackNames = this.catalog['flights'];
+                return (names && names.length) ? this.buildObjs(names, folder) : this.buildObjs(fallbackNames, this.folderMap['flights']);
+            },
+            setProduct(p){ const map={flights:'flights',hotels:'hotels',trains:'trains',bus:'bus'}; const next = map[p] || 'flights'; if(next!==this.category){ this.category = next; this.index = 0; this.render(); } },
+            start(){
+                this.render();
+                this.timer = setInterval(()=>this.next(), 2500);
+                // Subscribe to global product changes from the main controller
+                window.addEventListener('product:changed', (e)=>{
+                    const p = (e && e.detail && e.detail.product) ? e.detail.product : null;
+                    if(p) this.setProduct(p);
+                });
+            },
+            next(){ const L = this.list().length || 1; this.index = (this.index + 4) % L; this.render(); },
+            render(){ const arr=this.list(); this.currentSet = arr.slice(this.index, this.index + 4); if(this.currentSet.length < 4){ this.currentSet = this.currentSet.concat(arr.slice(0, 4 - this.currentSet.length)); } },
             timer: null,
             stop(){ if(this.timer) clearInterval(this.timer); }
         }
@@ -1441,197 +1948,242 @@
     </script>
 
     <main class="main-content bg-white relative z-10">
-        <div class="py-12 bg-white">
+        <div class="py-1 bg-white">
             <div class="max-w-6xl mx-auto">
                 <!-- Scroller moved to hero as 4-logo rotator -->
             </div>
         </div>
-        <!-- Partner Logos Section -->
-        @php
-            $partnerLogos = app(App\Http\Controllers\PartnerController::class)->getPartnerLogos();
-        @endphp
-        @include('components.partners-scroller', ['partnerLogos' => $partnerLogos])
+        <!-- MITRA KAMI section removed; replaced by Coupons below -->
 
     <!-- Old floating booking section removed (replaced by hero integrated form) -->
 
-        <!-- Promo Section -->
-        <section class="py-16 bg-white relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-r from-sky-50 to-white opacity-50"></div>
-            
-            <!-- Section Header -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                <div class="text-center max-w-3xl mx-auto mb-12">
-                    <span class="text-sky-600 font-semibold tracking-wider uppercase text-sm">Promo Spesial</span>
-                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
-                        Kupon Diskon untuk Anda
-                    </h2>
+        <!-- Coupons Section (referenced UI) -->
+    <section id="coupons" class="pt-8 pb-16 bg-white">
+            <style>
+            /* Ticket-style coupon: navy. Simplified single-column card with bottom dashed divider */
+            .coupon-card{position:relative;border-radius:16px;background:linear-gradient(135deg,#0b1430 0%,#112a63 100%);color:#e2e8f0;box-shadow:0 12px 30px -12px rgba(2,24,43,.6);width:100%;max-width:408px;display:grid;grid-template-columns:1fr;overflow:hidden;transition:transform .2s ease, box-shadow .2s ease}
+            .coupon-card:hover{transform:translateY(-4px);box-shadow:0 18px 42px -16px rgba(2,24,43,.7)}
+            /* Removed side notches on card edges to highlight the divider notches */
+            /* Increase padding ~30% to add overall card height */
+            .ticket-left{display:flex;flex-direction:column;gap:2px;padding:17px}
+            /* Right stub and vertical perforation removed */
+            .ticket-perf{display:none}
+            .ticket-stub{display:none}
+            .ticket-stub .stub-inner{display:none}
+            .stub-label{font-weight:800;color:#bfdbfe;letter-spacing:.08em;writing-mode:vertical-rl;transform:rotate(180deg);font-size:13px;opacity:.95}
+            .barcode{width:28px;height:52%;min-height:44px;background:repeating-linear-gradient(90deg,#dbeafe 0,#dbeafe 2px,transparent 2px,transparent 4px);border-radius:4px;opacity:.9;transition:opacity .2s ease}
+            .coupon-card:hover .barcode{opacity:1}
+            .stub-id{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-size:11px;color:#e5e7eb;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:6px}
+            /* Minimal, borderless copy button (no background color) */
+            .copy-btn{background:transparent;border:0;color:#93c5fd;padding:0;transition:color .15s ease;text-decoration:none}
+            .copy-btn:hover{color:#bfdbfe}
+            .copy-btn:active{transform:none}
+            .copy-success{font-size:11px;color:#22c55e;margin-top:4px;opacity:0;transform:translateY(-4px);transition:opacity .2s ease, transform .2s ease}
+            .copy-success.show{opacity:1;transform:translateY(0)}
+            /* Content sizing: keep card compact but ensure inner text remains readable */
+            .coupon-card h3{font-size:13px;line-height:1.15}
+            .coupon-card p{font-size:11px;line-height:1.15}
+            .coupon-card code{font-size:12px}
+            /* Emphasized coupon code (JALANYUK) */
+            .coupon-code{font-size:14px;font-weight:500}
+            .coupon-card .copy-btn{font-size:12px}
+            .coupon-card h3,.coupon-card p{overflow-wrap:anywhere}
+            .copy-success{font-size:11px}
+            /* Green state when code text switches to confirmation */
+            .code-copied{color:#22c55e !important;font-weight:700}
+            .code-failed{color:#ef4444 !important;font-weight:700}
+            /* Coupons heading blue theme */
+            .coupon-heading .icon-circle{background:#e0f2fe;color:#0369a1}
+            .coupon-heading .coupon-title{color:#0b1430}
+            .coupon-heading .coupon-subtitle{color:#000; font-weight: 400;}
+            /* Horizontal dashed divider with left/right notches */
+            .coupon-hr{position:relative;border-top:1px dashed rgba(255,255,255,.35);margin:10px 0}
+            /* Circular edge notches as half-circles at exact card edges */
+            .coupon-hr:before,.coupon-hr:after{content:"";position:absolute;top:0;transform:translateY(-50%);width:14px;height:14px;background:#fff;border-radius:9999px}
+            /* Place centers on the card edges: padding-left/right is 17px, radius is 7px => offset 17+7 = 24px */
+            .coupon-hr:before{left:-24px}
+            .coupon-hr:after{right:-24px}
+            /* Info icon aligned with title row (right side) */
+            .coupon-info{color:#93c5fd;opacity:.9;font-size:13px}
+            .coupon-card:hover .coupon-info{opacity:1;color:#bfdbfe}
+            /* Explicit icon colors to ensure they don't inherit white */
+            .ci-hotel{color:#38bdf8 !important}
+            .ci-xp{color:#fb7185 !important}
+            .ci-shuttle{color:#2dd4bf !important}
+            /* Badge backgrounds and fixed icon size to ensure visibility */
+            .ci-badge{width:20px;height:20px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center}
+            .ci-badge-hotel{background:rgba(56,189,248,.18)}
+            .ci-badge-xp{background:rgba(244,63,94,.18)}
+            .ci-badge-shuttle{background:rgba(45,212,191,.18)}
+            .ci-ico{font-size:10px}
+            /* New: Bus icon color and badge */
+            .ci-bus{color:#f59e0b !important}
+            .ci-badge-bus{background:rgba(245,158,11,.18)}
+            /* Carousel: hide scrollbar for a cleaner look */
+            #couponCarousel{scroll-behavior:smooth}
+            #couponCarousel::-webkit-scrollbar{display:none}
+            /* Navigation buttons removed per request */
+            </style>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Header -->
+                <div class="mb-6 coupon-heading">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full flex items-center justify-center icon-circle">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-[32px] font-extrabold coupon-title">8% New User Coupons</h2>
+                    </div>
+                    <p class="mt-1 coupon-subtitle">Valid for first transaction on MyTickets App</p>
                 </div>
 
-                <!-- Ticket/Coupon Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Ticket 1 -->
-                    <div class="group">
-                        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                            <!-- Ticket Border Pattern -->
-                            <div class="absolute left-0 top-0 h-full w-1 bg-sky-500"></div>
-                            <div class="absolute right-0 top-0 h-full w-[3px] bg-gradient-to-b from-transparent via-gray-200 to-transparent"></div>
-                            
-                            <!-- Ticket Content -->
-                            <div class="p-4">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-3">
-                                            <i class="fas fa-plane text-sky-500 text-2xl"></i>
-                                            <div>
-                                                <span class="inline-block px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full text-xs font-medium">
-                                                    First Transaction
-                                                </span>
-                                                <h3 class="text-lg font-bold text-gray-900 mt-1">Diskon Tiket Pesawat</h3>
-                                            </div>
+                <!-- Coupons Carousel -->
+                <div class="relative">
+                    <div id="couponCarousel" class="flex gap-3 overflow-x-auto pb-2" style="-ms-overflow-style:none; scrollbar-width:none;">
+                        <!-- Coupon: Hotel 8% -->
+                        <div class="coupon-card overflow-hidden flex-shrink-0">
+                            <div class="ticket-left p-2.5">
+                                <div class="flex items-start">
+                                    <div class="flex items-start gap-3 flex-1">
+                                        <span class="ci-badge ci-badge-hotel mt-0.5"><i class="fas fa-hotel ci-ico ci-hotel"></i></span>
+                                        <div class="flex flex-col gap-0.5">
+                                            <h3 class="font-semibold text-white leading-tight">Diskon 8% Hotel</h3>
+                                            <p class="text-slate-300 leading-snug">min. transaksi Rp 500rb</p>
                                         </div>
                                     </div>
-                                    <div class="text-right ml-4">
-                                        <span class="text-3xl font-bold text-sky-600">8%</span>
-                                        <p class="text-xs text-gray-500">OFF</p>
-                                    </div>
+                                    <i class="fas fa-info-circle coupon-info mt-0.5" title="Info"></i>
                                 </div>
-                                
-                                <div class="mt-3 space-y-1">
-                                    <p class="text-sm text-gray-600">Potongan hingga Rp 240rb</p>
-                                    <p class="text-xs text-gray-500">Min. transaksi Rp 2jt</p>
-                                </div>
-
-                                <!-- Dotted Line -->
-                                <div class="my-3 border-t-2 border-dashed border-sky-500/50"></div>
-
-                                <!-- Coupon Code -->
+                                <div class="coupon-hr"></div>
                                 <div class="flex items-center justify-between">
-                                    <div class="bg-sky-50 px-3 py-1.5 rounded flex items-center gap-2">
-                                        <i class="fas fa-ticket-alt text-sky-500 text-sm"></i>
-                                        <code class="text-gray-800 font-mono text-sm">JALANYUK</code>
-                                    </div>
-                                    <button class="text-sky-600 hover:text-sky-700 font-medium flex items-center gap-1 text-sm">
-                                        <i class="fas fa-copy"></i>
-                                        Salin
-                                    </button>
+                                    <code id="code-hotel" class="coupon-code font-mono text-slate-100">JALANYUK</code>
+                                    <button id="copy-hotel" onclick="copyCoupon('JALANYUK','copy-hotel','msg-hotel','code-hotel')" class="copy-btn font-semibold">Copy</button>
                                 </div>
+                                <p id="msg-hotel" class="copy-success" aria-live="polite" role="status">Kode berhasil disalin</p>
                             </div>
-
-                            <!-- Ticket Edge Circles -->
-                            <div class="absolute -left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-sky-50 rounded-full border-2 border-dashed border-sky-500/50"></div>
-                            <div class="absolute -right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-sky-50 rounded-full border-2 border-dashed border-sky-500/50"></div>
                         </div>
-                    </div>
 
-                    <!-- Ticket 2 -->
-                    <div class="group">
-                        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                            <!-- Ticket Border Pattern -->
-                            <div class="absolute left-0 top-0 h-full w-1 bg-sky-500"></div>
-                            <div class="absolute right-0 top-0 h-full w-[3px] bg-gradient-to-b from-transparent via-gray-200 to-transparent"></div>
-                            
-                            <!-- Ticket Content -->
-                            <div class="p-4">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-3">
-                                            <i class="fas fa-hotel text-sky-500 text-2xl"></i>
-                                            <div>
-                                                <span class="inline-block px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full text-xs font-medium">
-                                                    Hotel Deals
-                                                </span>
-                                                <h3 class="text-lg font-bold text-gray-900 mt-1">Diskon Hotel</h3>
-                                            </div>
+                        <!-- Coupon: Xperience 8% -->
+                        <div class="coupon-card overflow-hidden flex-shrink-0">
+                            <div class="ticket-left p-2.5">
+                                <div class="flex items-start">
+                                    <div class="flex items-start gap-3 flex-1">
+                                        <span class="ci-badge ci-badge-xp mt-0.5"><i class="fas fa-ticket-alt ci-ico ci-xp"></i></span>
+                                        <div class="flex flex-col gap-0.5">
+                                            <h3 class="font-semibold text-white leading-tight">Diskon s.d 8% Xperience</h3>
+                                            <p class="text-slate-300 leading-snug">min. transaksi Rp 300rb</p>
                                         </div>
                                     </div>
-                                    <div class="text-right ml-4">
-                                        <span class="text-3xl font-bold text-sky-600">8%</span>
-                                        <p class="text-xs text-gray-500">OFF</p>
-                                    </div>
+                                    <i class="fas fa-info-circle coupon-info mt-0.5" title="Info"></i>
                                 </div>
-                                
-                                <div class="mt-3 space-y-1">
-                                    <p class="text-sm text-gray-600">Potongan hingga Rp 500rb</p>
-                                    <p class="text-xs text-gray-500">Min. transaksi Rp 500rb</p>
-                                </div>
-
-                                <!-- Dotted Line -->
-                                <div class="my-3 border-t-2 border-dashed border-sky-500/50"></div>
-
-                                <!-- Coupon Code -->
+                                <div class="coupon-hr"></div>
                                 <div class="flex items-center justify-between">
-                                    <div class="bg-sky-50 px-3 py-1.5 rounded flex items-center gap-2">
-                                        <i class="fas fa-ticket-alt text-sky-500 text-sm"></i>
-                                        <code class="text-gray-800 font-mono text-sm">JALANYUK</code>
-                                    </div>
-                                    <button class="text-sky-600 hover:text-sky-700 font-medium flex items-center gap-1 text-sm">
-                                        <i class="fas fa-copy"></i>
-                                        Salin
-                                    </button>
+                                    <code id="code-xp" class="coupon-code font-mono text-slate-100">JALANYUK</code>
+                                    <button id="copy-xp" onclick="copyCoupon('JALANYUK','copy-xp','msg-xp','code-xp')" class="copy-btn font-semibold">Copy</button>
                                 </div>
+                                <p id="msg-xp" class="copy-success" aria-live="polite" role="status">Kode berhasil disalin</p>
                             </div>
-
-                            <!-- Ticket Edge Circles -->
-                            <div class="absolute -left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-sky-50 rounded-full border-2 border-dashed border-sky-500/50"></div>
-                            <div class="absolute -right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-sky-50 rounded-full border-2 border-dashed border-sky-500/50"></div>
                         </div>
-                    </div>
 
-                    <!-- Ticket 3 -->
-                    <div class="group">
-                        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                            <!-- Ticket Border Pattern -->
-                            <div class="absolute left-0 top-0 h-full w-1 bg-sky-500"></div>
-                            <div class="absolute right-0 top-0 h-full w-[3px] bg-gradient-to-b from-transparent via-gray-200 to-transparent"></div>
-                            
-                            <!-- Ticket Content -->
-                            <div class="p-4">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-3">
-                                            <i class="fas fa-map-marked-alt text-sky-500 text-2xl"></i>
-                                            <div>
-                                                <span class="inline-block px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full text-xs font-medium">
-                                                    Experience
-                                                </span>
-                                                <h3 class="text-lg font-bold text-gray-900 mt-1">Diskon Xperience</h3>
-                                            </div>
+                        <!-- Coupon: Antar Jemput Bandara 12% -->
+                        <div class="coupon-card overflow-hidden flex-shrink-0">
+                            <div class="ticket-left p-2.5">
+                                <div class="flex items-start">
+                                    <div class="flex items-start gap-3 flex-1">
+                                        <span class="ci-badge ci-badge-shuttle mt-0.5"><i class="fas fa-shuttle-van ci-ico ci-shuttle"></i></span>
+                                        <div class="flex flex-col gap-0.5">
+                                            <h3 class="font-semibold text-white leading-tight">Diskon 12% Antar Jemput Bandara</h3>
+                                            <p class="text-slate-300 leading-snug">min. transaksi Rp 150rb</p>
                                         </div>
                                     </div>
-                                    <div class="text-right ml-4">
-                                        <span class="text-3xl font-bold text-sky-600">8%</span>
-                                        <p class="text-xs text-gray-500">OFF</p>
-                                    </div>
+                                    <i class="fas fa-info-circle coupon-info mt-0.5" title="Info"></i>
                                 </div>
-                                
-                                <div class="mt-3 space-y-1">
-                                    <p class="text-sm text-gray-600">Potongan hingga Rp 300rb</p>
-                                    <p class="text-xs text-gray-500">Min. transaksi Rp 300rb</p>
-                                </div>
-
-                                <!-- Dotted Line -->
-                                <div class="my-3 border-t-2 border-dashed border-sky-500/50"></div>
-
-                                <!-- Coupon Code -->
+                                <div class="coupon-hr"></div>
                                 <div class="flex items-center justify-between">
-                                    <div class="bg-sky-50 px-3 py-1.5 rounded flex items-center gap-2">
-                                        <i class="fas fa-ticket-alt text-sky-500 text-sm"></i>
-                                        <code class="text-gray-800 font-mono text-sm">JALANYUK</code>
-                                    </div>
-                                    <button class="text-sky-600 hover:text-sky-700 font-medium flex items-center gap-1 text-sm">
-                                        <i class="fas fa-copy"></i>
-                                        Salin
-                                    </button>
+                                    <code id="code-shuttle" class="coupon-code font-mono text-slate-100">JALANYUK</code>
+                                    <button id="copy-shuttle" onclick="copyCoupon('JALANYUK','copy-shuttle','msg-shuttle','code-shuttle')" class="copy-btn font-semibold">Copy</button>
                                 </div>
+                                <p id="msg-shuttle" class="copy-success" aria-live="polite" role="status">Kode berhasil disalin</p>
                             </div>
+                        </div>
 
-                            <!-- Ticket Edge Circles -->
-                            <div class="absolute -left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gray-100 rounded-full"></div>
-                            <div class="absolute -right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gray-100 rounded-full"></div>
+                        <!-- Coupon: Bus 10% (New) -->
+                        <div class="coupon-card overflow-hidden flex-shrink-0">
+                            <div class="ticket-left p-2.5">
+                                <div class="flex items-start">
+                                    <div class="flex items-start gap-3 flex-1">
+                                        <span class="ci-badge ci-badge-bus mt-0.5"><i class="fas fa-bus ci-ico ci-bus"></i></span>
+                                        <div class="flex flex-col gap-0.5">
+                                            <h3 class="font-semibold text-white leading-tight">Diskon 10% Bus</h3>
+                                            <p class="text-slate-300 leading-snug">min. transaksi Rp 200rb</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-info-circle coupon-info mt-0.5" title="Info"></i>
+                                </div>
+                                <div class="coupon-hr"></div>
+                                <div class="flex items-center justify-between">
+                                    <code id="code-bus" class="coupon-code font-mono text-slate-100">JALANYUK</code>
+                                    <button id="copy-bus" onclick="copyCoupon('JALANYUK','copy-bus','msg-bus','code-bus')" class="copy-btn font-semibold">Copy</button>
+                                </div>
+                                <p id="msg-bus" class="copy-success" aria-live="polite" role="status">Kode berhasil disalin</p>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Optional carousel arrow (decorative) -->
+                <div class="hidden lg:block">
+                    <!-- Placeholder for future carousel controls -->
                 </div>
             </div>
+            <script>
+            function copyCoupon(code, btnId, msgId, codeId){
+                const updateUI = (ok)=>{
+                    const btn = document.getElementById(btnId);
+                    if(btn){
+                        const old = btn.textContent; btn.textContent = ok ? 'Copied' : 'Copy';
+                        // Keep button backgroundless; just tint text briefly on success
+                        if(ok){ btn.classList.add('text-sky-200'); }
+                        setTimeout(()=>{ btn.textContent = old; btn.classList.remove('text-sky-200'); }, 1600);
+                    }
+                    if(msgId){ const msg = document.getElementById(msgId); if(msg){ msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'), 1600); } }
+                    if(codeId){
+                        const c = document.getElementById(codeId);
+                        if(c){
+                            const prev = c.textContent;
+                            if(ok){
+                                c.textContent = 'Kode telah disalin'; c.classList.add('code-copied');
+                                setTimeout(()=>{ c.textContent = prev; c.classList.remove('code-copied'); }, 1600);
+                            } else {
+                                c.textContent = prev; c.classList.add('code-failed');
+                                setTimeout(()=>{ c.classList.remove('code-failed'); }, 1600);
+                            }
+                        }
+                    }
+                };
+
+                const legacyCopy = ()=>{
+                    try{
+                        const ta = document.createElement('textarea');
+                        ta.value = code; ta.setAttribute('readonly',''); ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+                        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, code.length);
+                        const ok = document.execCommand && document.execCommand('copy');
+                        document.body.removeChild(ta);
+                        updateUI(!!ok);
+                    }catch(err){ updateUI(false); }
+                };
+
+                try{
+                    if(navigator.clipboard && typeof navigator.clipboard.writeText === 'function'){
+                        navigator.clipboard.writeText(code).then(()=>updateUI(true)).catch(()=>legacyCopy());
+                    } else {
+                        legacyCopy();
+                    }
+                }catch(e){
+                    // No alerts; fallback gracefully
+                    legacyCopy();
+                }
+            }
+            // Carousel navigation buttons removed; horizontal scroll still available via touch/trackpad/mouse.
+            </script>
         </section>
 
         <!-- Popular Destinations Section -->
